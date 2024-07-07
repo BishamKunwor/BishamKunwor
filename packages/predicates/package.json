@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Strongly Typed Predicate Functions that narrows funtionality in Typescript.",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc"
   },
