@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "packages/predicates"
-  ]
+    "packages/*"
+  ],
+  "dependencies": {
+    "typescript": "^5.5.3"
+  }
 }
