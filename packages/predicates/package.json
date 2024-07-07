@@ -1,12 +1,27 @@
 {
   "name": "@bisham/predicates",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Strongly Typed Predicate Functions that narrows funtionality in Typescript.",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "predicates",
+    "type-guards"
+  ],
+  "author": {
+    "name": "Bisham Kunwor",
+    "email": "novelian.nova@gmail.com",
+    "url": "https://bishamkunwor.com.np"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BishamKunwor/BishamKunwor.git",
+    "directory": "packages/predicates"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
