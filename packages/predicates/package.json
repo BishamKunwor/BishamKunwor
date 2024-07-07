@@ -1,7 +1,7 @@
 {
   "name": "@bisham/predicates",
   "version": "0.0.1",
-  "description": "Strongly Typed Predicate Functions that narrows funtionality in Typescript.",
+  "description": "Strongly Typed Predicate Functions.",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
