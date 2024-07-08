@@ -1,5 +1,3 @@
-# Common Predicates
-
 ## Functions
 
 1. `isOnline()` when runned in browser environment, then returns **online status**, when runned in nodejs then returns **null**
