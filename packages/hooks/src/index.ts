@@ -1,5 +1,6 @@
 "use client";
 
+export { default as useIsFirstRender } from "./use-is-first-render";
 export { default as useOnlineStatus } from "./use-online-status";
 export { default as usePrevious } from "./use-previous";
 export { default as useResetKey } from "./use-reset-key";
