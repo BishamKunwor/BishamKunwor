@@ -1,5 +1,6 @@
 "use client";
 
+export { default as useDebouncedCallback } from "./use-debounced-callback";
 export { default as useDebouncedValue } from "./use-debounced-value";
 export { default as useIsFirstRender } from "./use-is-first-render";
 export { default as useOnlineStatus } from "./use-online-status";
