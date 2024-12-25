@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
+/**
+ * @deprecated Will be removed from next major release
+ */
 export default function useSyncState<T>(value: T) {
   const [localState, setLocalState] = useState<T>(value);
 

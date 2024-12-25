@@ -1,6 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 
-// Use this Hook as key to ReactElement and call reset to trigger destoryOnClose Feature
+/**
+ * @deprecated Will be removed from next major release
+ * Please use `useResetKey` instead
+ */
 export default function useReset() {
   const [resetState, setResetState] = useState(0);
 
