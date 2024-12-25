@@ -1,5 +1,6 @@
 "use client";
 
+export { default as useBrowserResourceIdleCallback } from "./use-browser-resource-idle-callback";
 export { default as useDebouncedCallback } from "./use-debounced-callback";
 export { default as useDebouncedValue } from "./use-debounced-value";
 export { default as useIsFirstRender } from "./use-is-first-render";
