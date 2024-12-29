@@ -3,8 +3,8 @@
 export { default as useBrowserResourceIdleCallback } from "./use-browser-resource-idle-callback";
 export { default as useDebouncedCallback } from "./use-debounced-callback";
 export { default as useDebouncedValue } from "./use-debounced-value";
+export { useTriggerErrorBoundary } from "./use-trigger-error-boundary";
 export { useResetKey } from "./use-reset-key";
-export { default as useTriggerErrorBoundary } from "./use-trigger-error-boundary";
 export { useToggle } from "./use-toggle";
 export { usePrevious } from "./use-previous";
 export { useIsFirstRender } from "./use-is-first-render";
