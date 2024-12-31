@@ -1,5 +1,6 @@
 import type { AxiosInstance } from "axios";
 import type { PropsWithChildren } from "react";
+import type useDedupeNewTokenRequest from "./use-dedupe-new-token-request";
 
 export type AuthContextType =
   | {
@@ -31,3 +32,14 @@ export type RefreshDedupeUnion =
     };
 
 export type ReactUseState<T> = React.Dispatch<React.SetStateAction<T>>;
+
+export interface UseDedupeNewTokenRequestProps {
+  setAccessToken: ReactUseState<string | undefined>;
+  getAccessToken: () => Promise<{ accessToken: string }>;
+}
+
+export interface UseRequestHandlerProps {
+  accessToken: string | undefined;
+  axiosPrivate: AxiosInstance;
+  getNewTokens: ReturnType<typeof useDedupeNewTokenRequest>["getNewTokens"];
+}

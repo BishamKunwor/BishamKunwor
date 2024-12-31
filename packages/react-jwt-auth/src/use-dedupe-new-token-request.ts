@@ -1,15 +1,12 @@
 import { useCallback, useRef } from "react";
-import { ReactUseState } from "./types";
+import type { UseDedupeNewTokenRequestProps } from "./types";
 import { RefreshDedupeUnion } from "./types";
 import { devlog, isTokenValid } from "./helpers";
 
 export default function useDedupeNewTokenRequest({
   getAccessToken,
   setAccessToken,
-}: {
-  setAccessToken: ReactUseState<string | undefined>;
-  getAccessToken: () => Promise<{ accessToken: string }>;
-}) {
+}: UseDedupeNewTokenRequestProps) {
   const refreshDedupeRef = useRef<RefreshDedupeUnion>({
     isFetchingTokens: false,
     refetchAxiosInstance: undefined,
@@ -35,10 +32,10 @@ export default function useDedupeNewTokenRequest({
       let tokenResponse: Awaited<ReturnType<typeof initiateTokenFetch>>;
 
       if (refreshDedupeRef.current.isFetchingTokens) {
-        devlog("LOG: Waiting for Access Token");
+        devlog("AUTH-LOG: Waiting for de-duped Access Token");
         tokenResponse = await refreshDedupeRef.current.refetchAxiosInstance;
       } else {
-        devlog("LOG: Fetching New Access Token");
+        devlog("AUTH-LOG: Fetching New Access Token");
         tokenResponse = await initiateTokenFetch();
       }
 
@@ -50,9 +47,10 @@ export default function useDedupeNewTokenRequest({
       }
 
       throw new Error(
-        "Invalid Token: Received Invalid JWT Token while Sign-In"
+        "AUTH-ERROR: (Invalid Token) Received Invalid JWT Token while Sign-In"
       );
     } catch (error) {
+      devlog("AUTH-ERROR", error);
       setAccessToken(undefined);
       return Promise.reject(error);
     }

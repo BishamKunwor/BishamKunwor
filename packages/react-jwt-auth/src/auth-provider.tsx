@@ -46,7 +46,9 @@ export default function AuthProvider({
       return responseToken.accessToken;
     }
 
-    devlog("AUTH-LOG: Access Token Valid\nSkipped Fetching New Token");
+    devlog(`AUTH-LOG: Access Token Valid 
+      Skipped Fetching New Token
+      Returning Existing Access Token`);
     return Promise.resolve(accessToken);
   }, [accessToken, getNewTokens]);
 
@@ -64,8 +66,9 @@ export default function AuthProvider({
             setAccessToken(accessToken);
             return;
           }
+
           throw new Error(
-            "Invalid Token: Received Invalid JWT Token while Sign-In"
+            "AUTH-ERROR: (Invalid Token) Received Invalid JWT Token while Sign-In"
           );
         },
         getAccessToken: _getAccessToken,

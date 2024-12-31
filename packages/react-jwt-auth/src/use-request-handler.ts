@@ -1,18 +1,13 @@
 import { useLayoutEffect } from "react";
-import type { AxiosInstance } from "axios";
 
 import { devlog, isEmpty, isString, isTokenExpired } from "./helpers";
-import useDedupeNewTokenRequest from "./use-dedupe-new-token-request";
+import { UseRequestHandlerProps } from "./types";
 
 export default function useRequestHandler({
   accessToken,
   getNewTokens,
   axiosPrivate,
-}: {
-  accessToken: string | undefined;
-  axiosPrivate: AxiosInstance;
-  getNewTokens: ReturnType<typeof useDedupeNewTokenRequest>["getNewTokens"];
-}) {
+}: UseRequestHandlerProps) {
   useLayoutEffect(() => {
     const reqInterceptor = axiosPrivate.interceptors.request.use(
       async (config) => {
@@ -26,7 +21,7 @@ export default function useRequestHandler({
             isString(config.headers.Authorization) &&
             isTokenExpired(config.headers.Authorization.split(" ")[1])
           ) {
-            devlog(`access token expired for ${config.url}`);
+            devlog(`AUTH-LOG: Access token expired for ${config.url}`);
 
             const tokenResponse = await getNewTokens();
 
@@ -36,7 +31,7 @@ export default function useRequestHandler({
 
           return config;
         } catch (error) {
-          devlog(error);
+          devlog("AUTH-ERROR", error);
           return Promise.reject(config);
         }
       },
