@@ -1,7 +1,7 @@
 "use client";
 
 export { default as useBrowserResourceIdleCallback } from "./use-browser-resource-idle-callback";
-export { default as useDebouncedCallback } from "./use-debounced-callback";
+export { useDebounceCallback } from "./use-debouce-callback";
 export { useDebounceValue } from "./use-debounce-value";
 export { useTriggerErrorBoundary } from "./use-trigger-error-boundary";
 export { useResetKey } from "./use-reset-key";

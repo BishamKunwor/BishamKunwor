@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 
-export default function useDebouncedCallback<
+export default function useDebounceCallback<
   Callback extends (...args: any[]) => any
 >(callback: Callback, delay: number = 0) {
   const debounceTimeoutRef = useRef<number | undefined>(undefined);
@@ -16,7 +16,7 @@ export default function useDebouncedCallback<
     return () => window.clearTimeout(debounceTimeoutRef.current);
   }, []);
 
-  const debouncedCallback = useCallback(
+  const debounceCallback = useCallback(
     (...args: Parameters<Callback>) => {
       window.clearTimeout(debounceTimeoutRef.current);
 
@@ -27,5 +27,5 @@ export default function useDebouncedCallback<
     [delay]
   );
 
-  return debouncedCallback;
+  return debounceCallback;
 }
