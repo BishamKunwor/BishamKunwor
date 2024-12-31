@@ -6,11 +6,9 @@ import { devlog, isTokenValid } from "./helpers";
 export default function useDedupeNewTokenRequest({
   getAccessToken,
   setAccessToken,
-  showLogs,
 }: {
   setAccessToken: ReactUseState<string | undefined>;
   getAccessToken: () => Promise<{ accessToken: string }>;
-  showLogs: boolean;
 }) {
   const refreshDedupeRef = useRef<RefreshDedupeUnion>({
     isFetchingTokens: false,
@@ -37,10 +35,10 @@ export default function useDedupeNewTokenRequest({
       let tokenResponse: Awaited<ReturnType<typeof initiateTokenFetch>>;
 
       if (refreshDedupeRef.current.isFetchingTokens) {
-        showLogs && devlog("LOG: Waiting for Access Token");
+        devlog("LOG: Waiting for Access Token");
         tokenResponse = await refreshDedupeRef.current.refetchAxiosInstance;
       } else {
-        showLogs && devlog("LOG: Fetching New Access Token");
+        devlog("LOG: Fetching New Access Token");
         tokenResponse = await initiateTokenFetch();
       }
 

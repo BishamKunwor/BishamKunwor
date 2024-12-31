@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-
+import { useCallback, useLayoutEffect, useState } from "react";
 import { AuthContextProvider } from "./auth-context";
 import {
   devlog,
@@ -20,6 +19,11 @@ export default function AuthProvider({
   debug = false,
   onSignOut,
 }: AuthProviderProps) {
+  useLayoutEffect(() => {
+    // @ts-expect-error
+    window.react_jwt_auth_debug = debug;
+  }, [debug]);
+
   const [accessToken, setAccessToken] = useState(() => {
     if (
       isString(defaultValue?.accessToken) &&
@@ -32,7 +36,6 @@ export default function AuthProvider({
   const { getNewTokens } = useDedupeNewTokenRequest({
     setAccessToken,
     getAccessToken,
-    showLogs: debug,
   });
 
   useRequestHandler({ accessToken, getNewTokens, axiosPrivate });
@@ -43,7 +46,7 @@ export default function AuthProvider({
       return responseToken.accessToken;
     }
 
-    debug && devlog("AUTH-LOG: Access Token Valid\nSkipped Fetching New Token");
+    devlog("AUTH-LOG: Access Token Valid\nSkipped Fetching New Token");
     return Promise.resolve(accessToken);
   }, [accessToken, getNewTokens]);
 

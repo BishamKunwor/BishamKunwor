@@ -1,3 +1,6 @@
 export default function devlog<T>(message: T, ...data: any[]) {
-  console.log(message, ...data);
+  // @ts-expect-error NOTE: will only log message when debug mode is configured
+  if (window.react_jwt_auth_debug) {
+    console.log(message, ...data);
+  }
 }
