@@ -21,7 +21,7 @@ export default function AuthProvider({
 }: AuthProviderProps) {
   useLayoutEffect(() => {
     // @ts-expect-error
-    window.react_jwt_auth_debug = debug;
+    globalThis.react_jwt_auth_debug = debug;
   }, [debug]);
 
   const [accessToken, setAccessToken] = useState(() => {
