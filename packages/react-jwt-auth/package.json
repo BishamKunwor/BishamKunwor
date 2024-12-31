@@ -1,0 +1,39 @@
+{
+  "name": "@bisham/react-jwt-auth",
+  "version": "0.2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rm -rf ./dist && rollup -c"
+  },
+  "peerDependencies": {
+    "axios": "^1.7.9",
+    "dayjs": "^1.11.13",
+    "react": "^19.0.0"
+  },
+  "keywords": [
+    "jwt",
+    "auth",
+    "react-auth",
+    "react-jwt-auth",
+    "jwt-auth"
+  ],
+  "author": {
+    "name": "Bisham Kunwor",
+    "email": "novelian.nova@gmail.com",
+    "url": "https://bishamkunwor.com.np"
+  },
+  "license": "MIT",
+  "description": "React Jwt Auth is an auth state management library that handles all the core functionality of jwt auth including de-duping, attaching auth token in each request",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "rollup": "^4.29.1",
+    "rollup-plugin-dts": "^6.1.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.2"
+  }
+}
