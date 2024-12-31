@@ -26,9 +26,3 @@ export default function isTokenExpired(token: string, offset: number = 15) {
 
   return dayjs(exp).diff(dayjs().unix()) < offset;
 }
-
-// export function getTokenExpiryTime(token: string) {
-//   const { exp } = base64UrlDecode(token);
-
-//   return exp;
-// }
