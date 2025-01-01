@@ -1,19 +1,6 @@
 import dayjs from "dayjs";
-
-// Decode JWT Token to get expiry time
-function base64UrlDecode(token: string): {
-  exp: number;
-  [index: string]: unknown;
-} {
-  try {
-    const str = token.split(".")[1];
-    const padded = str + "=".repeat((4 - (str.length % 4)) % 4);
-    // Decode the Base64 URL encoded string
-    return JSON.parse(atob(padded));
-  } catch (error) {
-    return { exp: dayjs().unix() };
-  }
-}
+import isEmpty from "./is-empty";
+import { getTokenExpiryTime } from "./get-token-expiry-time";
 
 /**
  * @param token Token to verify if it is expired or not
@@ -22,7 +9,11 @@ function base64UrlDecode(token: string): {
  * @returns boolean
  */
 export default function isTokenExpired(token: string, offset: number = 15) {
-  const { exp } = base64UrlDecode(token);
+  const exp = getTokenExpiryTime(token);
+
+  if (isEmpty(exp)) {
+    return true;
+  }
 
   return dayjs(exp).diff(dayjs().unix()) < offset;
 }

@@ -1,16 +1,11 @@
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import { AuthContextProvider } from "./auth-context";
-import {
-  devlog,
-  isEmpty,
-  isString,
-  isTokenExpired,
-  isTokenValid,
-} from "./helpers";
+import { isString, isTokenValid } from "./helpers";
 import useRequestHandler from "./use-request-handler";
 import useDedupeNewTokenRequest from "./use-dedupe-new-token-request";
 import type { AuthProviderProps } from "./types";
 import useDebug from "./use-debug";
+import useGetAccessToken from "./use-get-access-token";
 
 export default function AuthProvider({
   children,
@@ -38,17 +33,7 @@ export default function AuthProvider({
 
   useRequestHandler({ accessToken, getNewTokens, axiosPrivate });
 
-  const _getAccessToken = useCallback(async () => {
-    if (isEmpty(accessToken) || isTokenExpired(accessToken)) {
-      const responseToken = await getNewTokens();
-      return responseToken.accessToken;
-    }
-
-    devlog(`AUTH-LOG: Access Token Valid 
-      Skipped Fetching New Token
-      Returning Existing Access Token`);
-    return Promise.resolve(accessToken);
-  }, [accessToken, getNewTokens]);
+  const _getAccessToken = useGetAccessToken(accessToken, getNewTokens);
 
   return (
     <AuthContextProvider

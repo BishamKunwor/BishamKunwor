@@ -2,6 +2,7 @@ import { useLayoutEffect } from "react";
 
 import { devlog, isEmpty, isString, isTokenExpired } from "./helpers";
 import { UseRequestHandlerProps } from "./types";
+import { getTokenExpiryTime } from "./helpers/get-token-expiry-time";
 
 export default function useRequestHandler({
   accessToken,
@@ -17,14 +18,20 @@ export default function useRequestHandler({
             config.headers.Authorization = `Bearer ${accessToken}`;
           }
 
+          // Sending request without authorization when accessToken is empty
+          if (!isString(config.headers.Authorization)) {
+            return config;
+          }
+
+          const token = config.headers.Authorization.split(" ")[1];
+
+          // Handling tokens with exp property
           if (
-            isString(config.headers.Authorization) &&
-            isTokenExpired(config.headers.Authorization.split(" ")[1])
+            typeof getTokenExpiryTime(token) !== "undefined" &&
+            isTokenExpired(token)
           ) {
             devlog(`AUTH-LOG: Access token expired for ${config.url}`);
-
             const tokenResponse = await getNewTokens();
-
             // eslint-disable-next-line no-param-reassign
             config.headers.Authorization = `Bearer ${tokenResponse.accessToken}`;
           }

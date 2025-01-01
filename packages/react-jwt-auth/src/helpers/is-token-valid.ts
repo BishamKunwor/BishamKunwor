@@ -16,18 +16,17 @@ export default function isTokenValid(token: string) {
     }
 
     // Optional: Check if the token has expired
-    if (payload.exp && typeof payload.exp === "number") {
-      const currentTime = Math.floor(Date.now() / 1000);
-      if (currentTime > payload.exp) {
-        return false;
-      }
-    }
+    // if (payload.exp && typeof payload.exp === "number") {
+    //   const currentTime = Math.floor(Date.now() / 1000);
+    //   if (currentTime > payload.exp) {
+    //     return false;
+    //   }
+    // }
 
     // If we reach here, the token structure is valid
     return true;
   } catch (error) {
     // If any error occurs during parsing, the token is invalid
-    // console.error("Invalid token structure:", error.message);
     return false;
   }
 }
