@@ -24,6 +24,11 @@
     "email": "novelian.nova@gmail.com",
     "url": "https://bishamkunwor.com.np"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BishamKunwor/BishamKunwor.git",
+    "directory": "packages/react-jwt-auth"
+  },
   "license": "MIT",
   "description": "React Jwt Auth is an auth state management library that handles all the core functionality of jwt auth including de-duping, attaching auth token in each request",
   "devDependencies": {
