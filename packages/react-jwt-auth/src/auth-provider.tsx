@@ -6,6 +6,7 @@ import useDedupeNewTokenRequest from "./use-dedupe-new-token-request";
 import type { AuthProviderProps } from "./types";
 import useDebug from "./use-debug";
 import useGetAccessToken from "./use-get-access-token";
+import useResponseHandler from "./use-response-handler";
 
 export default function AuthProvider({
   children,
@@ -31,7 +32,11 @@ export default function AuthProvider({
 
   useDebug(debug);
 
+  // Handles Authentication when jwt payload contain exp property
   useRequestHandler({ accessToken, getNewTokens, axiosPrivate });
+
+  // Handles Authentication when jwt payload does not contain exp property
+  useResponseHandler({ axiosPrivate, getNewTokens });
 
   const _getAccessToken = useGetAccessToken(accessToken, getNewTokens);
 
