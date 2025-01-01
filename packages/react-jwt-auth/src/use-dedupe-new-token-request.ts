@@ -47,7 +47,7 @@ export default function useDedupeNewTokenRequest({
       }
 
       throw new Error(
-        "AUTH-ERROR: (Invalid Token) Received Invalid JWT Token while Sign-In"
+        "AUTH-ERROR: (Invalid Token) Received Invalid JWT Token while fetching for new Token"
       );
     } catch (error) {
       devlog("AUTH-ERROR", error);

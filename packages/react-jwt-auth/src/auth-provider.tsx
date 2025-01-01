@@ -24,12 +24,12 @@ export default function AuthProvider({
     }
   });
 
-  useDebug(debug);
-
   const { getNewTokens } = useDedupeNewTokenRequest({
     setAccessToken,
     getAccessToken,
   });
+
+  useDebug(debug);
 
   useRequestHandler({ accessToken, getNewTokens, axiosPrivate });
 
@@ -45,14 +45,13 @@ export default function AuthProvider({
           onSignOut();
         },
         signIn: (accessToken: string) => {
-          if (isTokenValid(accessToken)) {
-            setAccessToken(accessToken);
-            return;
+          if (!isTokenValid(accessToken)) {
+            throw new Error(
+              "AUTH-ERROR: (Invalid Token) Received Invalid JWT Token while Sign-In"
+            );
           }
 
-          throw new Error(
-            "AUTH-ERROR: (Invalid Token) Received Invalid JWT Token while Sign-In"
-          );
+          setAccessToken(accessToken);
         },
         getAccessToken: _getAccessToken,
       }}

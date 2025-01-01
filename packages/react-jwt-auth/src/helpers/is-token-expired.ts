@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import isEmpty from "./is-empty";
-import { getTokenExpiryTime } from "./get-token-expiry-time";
+import getTokenExpiryTime from "./get-token-expiry-time";
 
 /**
  * @param token Token to verify if it is expired or not

@@ -1,6 +1,6 @@
 import devlog from "./devlog";
 
-export function getTokenExpiryTime(token: string) {
+export default function getTokenExpiryTime(token: string) {
   try {
     const parts = token.split(".");
     const { exp = undefined } = JSON.parse(atob(parts[1])) || {};

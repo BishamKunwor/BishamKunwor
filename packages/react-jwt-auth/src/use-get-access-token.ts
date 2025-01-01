@@ -1,6 +1,5 @@
 import { useCallback } from "react";
-import { devlog, isEmpty, isTokenExpired } from "./helpers";
-import { getTokenExpiryTime } from "./helpers/get-token-expiry-time";
+import { devlog, isEmpty, isTokenExpired, getTokenExpiryTime } from "./helpers";
 import useDedupeNewTokenRequest from "./use-dedupe-new-token-request";
 
 export default function useGetAccessToken(
