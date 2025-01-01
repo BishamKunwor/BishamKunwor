@@ -1,8 +1,8 @@
+### NOTE: `exp` property must be included in access token payload for the package to work [Check If Your Token Contains exp property](https://jwt.io/#debugger-io)
+
 ## Overview
 
 `@bisham/react-jwt-auth` simplifies JWT authentication flow in your React apps by managing access tokens, including automatic handling of token expiration, refreshing tokens, and deduplication of token fetch requests.
-
-### NOTE: `exp` property must be included in access token payload for the package to work [Check If Your Token Contains exp property](https://jwt.io/#debugger-io)
 
 ## Features
 

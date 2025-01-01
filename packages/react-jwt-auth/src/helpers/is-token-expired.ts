@@ -9,7 +9,7 @@ function base64UrlDecode(token: string): {
     const str = token.split(".")[1];
     const padded = str + "=".repeat((4 - (str.length % 4)) % 4);
     // Decode the Base64 URL encoded string
-    return JSON.parse(decodeURIComponent(escape(window.atob(padded))));
+    return JSON.parse(atob(padded));
   } catch (error) {
     return { exp: dayjs().unix() };
   }
