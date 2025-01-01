@@ -10,6 +10,7 @@ import {
 import useRequestHandler from "./use-request-handler";
 import useDedupeNewTokenRequest from "./use-dedupe-new-token-request";
 import type { AuthProviderProps } from "./types";
+import useDebug from "./use-debug";
 
 export default function AuthProvider({
   children,
@@ -19,11 +20,6 @@ export default function AuthProvider({
   debug = false,
   onSignOut,
 }: AuthProviderProps) {
-  useLayoutEffect(() => {
-    // @ts-expect-error
-    globalThis.react_jwt_auth_debug = debug;
-  }, [debug]);
-
   const [accessToken, setAccessToken] = useState(() => {
     if (
       isString(defaultValue?.accessToken) &&
@@ -32,6 +28,8 @@ export default function AuthProvider({
       return defaultValue.accessToken;
     }
   });
+
+  useDebug(debug);
 
   const { getNewTokens } = useDedupeNewTokenRequest({
     setAccessToken,
