@@ -1,19 +1,20 @@
 import { useLayoutEffect } from "react";
-import type { AxiosError, AxiosInstance } from "axios";
 import { devlog } from "./helpers";
-import type useDedupeNewTokenRequest from "./use-dedupe-new-token-request";
+import type { UseResponseHandlerProps } from "./types";
+import axios from "axios";
 
 export default function useResponseHandler({
   axiosPrivate,
   getNewTokens,
-}: {
-  axiosPrivate: AxiosInstance;
-  getNewTokens: ReturnType<typeof useDedupeNewTokenRequest>["getNewTokens"];
-}) {
+}: UseResponseHandlerProps) {
   useLayoutEffect(() => {
     const resInterceptor = axiosPrivate.interceptors.response.use(
       (res) => res,
-      async (error: AxiosError) => {
+      async (error) => {
+        if (!axios.isAxiosError(error) || typeof error.config === "undefined") {
+          return Promise.reject(error);
+        }
+
         try {
           if (error.status !== 401) {
             return await Promise.reject(error);
@@ -23,7 +24,7 @@ export default function useResponseHandler({
 
           const tokenResponse = await getNewTokens();
 
-          const config = error.config!;
+          const config = error.config;
           // eslint-disable-next-line no-param-reassign
           config.headers.Authorization = `Bearer ${tokenResponse.accessToken}`;
           return await axiosPrivate(config);
@@ -36,5 +37,5 @@ export default function useResponseHandler({
     );
 
     return () => axiosPrivate.interceptors.response.eject(resInterceptor);
-  }, [getNewTokens]);
+  }, [axiosPrivate, getNewTokens]);
 }

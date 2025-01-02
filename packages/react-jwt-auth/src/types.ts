@@ -43,3 +43,8 @@ export interface UseRequestHandlerProps {
   axiosPrivate: AxiosInstance;
   getNewTokens: ReturnType<typeof useDedupeNewTokenRequest>["getNewTokens"];
 }
+
+export interface UseResponseHandlerProps {
+  axiosPrivate: AxiosInstance;
+  getNewTokens: ReturnType<typeof useDedupeNewTokenRequest>["getNewTokens"];
+}
