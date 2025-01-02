@@ -15,7 +15,11 @@ export default function AuthProvider({
   getAccessToken,
   debug = false,
   onSignOut,
+  onSignIn,
 }: AuthProviderProps) {
+  // Sets Global Property for enabling and disabling debugging
+  useDebug(debug);
+
   const [accessToken, setAccessToken] = useState(() => {
     if (
       isString(defaultValue?.accessToken) &&
@@ -25,12 +29,11 @@ export default function AuthProvider({
     }
   });
 
+  // Dedupe `getAccessToken` api callback when multiple token expired api request triggers fetch
   const { getNewTokens } = useDedupeNewTokenRequest({
     setAccessToken,
     getAccessToken,
   });
-
-  useDebug(debug);
 
   // Handles Authentication when jwt payload contain exp property
   useRequestHandler({ accessToken, getNewTokens, axiosPrivate });
@@ -57,6 +60,7 @@ export default function AuthProvider({
           }
 
           setAccessToken(accessToken);
+          onSignIn?.(accessToken);
         },
         getAccessToken: _getAccessToken,
       }}

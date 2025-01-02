@@ -40,6 +40,8 @@ export default function useRequestHandler({
             config.headers.Authorization = `Bearer ${tokenResponse.accessToken}`;
           }
 
+          // Make Request via jwt token with/without exp payload
+          // Auth to be handled by response handler in case exp property is missing in jwt payload
           return config;
         } catch (error) {
           devlog("AUTH-ERROR", error);

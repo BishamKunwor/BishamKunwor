@@ -19,6 +19,7 @@ export interface AuthProviderProps extends PropsWithChildren {
   debug?: boolean;
   getAccessToken: () => Promise<{ accessToken: string }>;
   onSignOut: () => any;
+  onSignIn?: (accessToken: string) => any;
 }
 
 export type RefreshDedupeUnion =
