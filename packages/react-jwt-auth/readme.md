@@ -4,8 +4,8 @@
 
 ## Features
 
-- **JWT Token Validation**: Ensures that the JWT token format is correct and checks the expiration (`exp`) field.
-- **Token Expiration Handling**: Automatically detects when the token has expired and triggers a refresh.
+- **JWT Token Validation**: Ensures that the JWT token format is correct and checks the expiration (`exp`) field if it exist.
+- **Token Expiration Handling**: Automatically detects when the token has expired and triggers a refresh when `exp` is in jwt payload.
 - **Automatic Token Refresh**: Supports automatic fetching of new access tokens and handles deduplication of token requests.
 - **Secure Authorization Context**: Provides a context for managing the user's authentication state across your app.
 - **Seamless Integration with Axios**: Automatically attaches the `Authorization` header with the correct access token in your `axios` requests.
@@ -53,6 +53,10 @@ const App = () => {
       getAccessToken={getAccessToken}
       debug
       onSignOut={() => console.log("Signed out")}
+      onSignIn={(accessToken)=>{
+        // something to do when user signs in into the app
+        // using signIn callback provided by `useAuth`
+      }}
     >
       {/* Your app components */}
     </AuthProvider>
@@ -99,7 +103,7 @@ const MyComponent = () => {
 
 ### Handling Token Expiration
 
-This package expects that the JWT token includes the `exp` (expiration) field in the payload. If the token is expired, the package will automatically try to refresh the token by calling the `getNewTokens` function you provide.
+This package checks that the JWT token includes the `exp` (expiration) field in the payload. If the token is expired, the package will automatically try to refresh the token by calling the `getNewTokens` function you provide. If `exp` field is missing then it will check if server is sending 401 error then retry to `getNewTokens` method.
 
 ## API
 
@@ -119,10 +123,10 @@ This package expects that the JWT token includes the `exp` (expiration) field in
   - `signIn(accessToken)`: Function to sign the user in with the provided `accessToken`.
   - `signOut()`: Function to sign the user out.
   - `getAccessToken()`: Function to get the current access token (or fetch a new one if expired).
+  - `onSignIn`: Function callback that is triggered when user signs in via signin function provided by `useAuth`.
 
 ## Important Notes
 
-- The JWT `accessToken` must include the `exp` field in the payload for token expiration detection and refresh logic to work correctly.
 - Make sure your token fetching logic in `getAccessToken` is set up properly to handle token expiration and refreshing.
 - If you encounter issues or need debugging, enable the `debug` flag when using `AuthProvider` to get detailed logs.
 
