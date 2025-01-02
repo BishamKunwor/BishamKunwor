@@ -1,9 +1,10 @@
 import { useLayoutEffect } from "react";
-import { devlog } from "./helpers";
+import { devlog, isEmpty } from "./helpers";
 import type { UseResponseHandlerProps } from "./types";
 import axios from "axios";
 
 export default function useResponseHandler({
+  accessToken,
   axiosPrivate,
   getNewTokens,
 }: UseResponseHandlerProps) {
@@ -17,6 +18,11 @@ export default function useResponseHandler({
 
         try {
           if (error.status !== 401) {
+            return await Promise.reject(error);
+          }
+
+          // If token is empty then we do not proceed with getting new tokens
+          if (isEmpty(accessToken)) {
             return await Promise.reject(error);
           }
 
@@ -37,5 +43,5 @@ export default function useResponseHandler({
     );
 
     return () => axiosPrivate.interceptors.response.eject(resInterceptor);
-  }, [axiosPrivate, getNewTokens]);
+  }, [accessToken, axiosPrivate, getNewTokens]);
 }

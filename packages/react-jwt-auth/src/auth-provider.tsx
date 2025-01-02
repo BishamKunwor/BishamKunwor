@@ -54,7 +54,7 @@ export default function AuthProvider({
   useRequestHandler({ accessToken, getNewTokens, axiosPrivate });
 
   // Handles Authentication when jwt payload does not contain exp property
-  // useResponseHandler({ axiosPrivate, getNewTokens });
+  useResponseHandler({ accessToken, axiosPrivate, getNewTokens });
 
   const _getAccessToken = useGetAccessToken(accessToken, getNewTokens);
 
@@ -71,6 +71,16 @@ export default function AuthProvider({
           if (!isTokenValid(accessToken)) {
             throw new Error(
               "AUTH-ERROR: (Invalid Token) Received Invalid JWT Token while Sign-In"
+            );
+          }
+
+          // Handles Authentication state when access token is expired
+          if (
+            typeof getTokenExpiryTime(accessToken) === "number" &&
+            isTokenExpired(accessToken)
+          ) {
+            throw new Error(
+              "AUTH-ERROR: (Expired Token) Received Expired JWT Token while Sign-In"
             );
           }
 

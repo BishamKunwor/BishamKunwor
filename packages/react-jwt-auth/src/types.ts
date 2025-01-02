@@ -46,6 +46,7 @@ export interface UseRequestHandlerProps {
 }
 
 export interface UseResponseHandlerProps {
+  accessToken: string | undefined;
   axiosPrivate: AxiosInstance;
   getNewTokens: ReturnType<typeof useDedupeNewTokenRequest>["getNewTokens"];
 }
