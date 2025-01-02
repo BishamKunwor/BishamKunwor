@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { AuthContextProvider } from "./auth-context";
-import { isString, isTokenValid } from "./helpers";
+import {
+  getTokenExpiryTime,
+  isString,
+  isTokenExpired,
+  isTokenValid,
+} from "./helpers";
 import useRequestHandler from "./use-request-handler";
 import useDedupeNewTokenRequest from "./use-dedupe-new-token-request";
 import type { AuthProviderProps } from "./types";
@@ -21,10 +26,20 @@ export default function AuthProvider({
   useDebug(debug);
 
   const [accessToken, setAccessToken] = useState(() => {
+    if (!isString(defaultValue?.accessToken)) {
+      return;
+    }
+
+    // Handles Authentication state when default access token is expired
     if (
-      isString(defaultValue?.accessToken) &&
-      isTokenValid(defaultValue.accessToken)
+      typeof getTokenExpiryTime(defaultValue.accessToken) === "number" &&
+      isTokenExpired(defaultValue.accessToken)
     ) {
+      return;
+    }
+
+    // Handles default authentication state when exp property is missing in jwt payload
+    if (isTokenValid(defaultValue.accessToken)) {
       return defaultValue.accessToken;
     }
   });
@@ -39,7 +54,7 @@ export default function AuthProvider({
   useRequestHandler({ accessToken, getNewTokens, axiosPrivate });
 
   // Handles Authentication when jwt payload does not contain exp property
-  useResponseHandler({ axiosPrivate, getNewTokens });
+  // useResponseHandler({ axiosPrivate, getNewTokens });
 
   const _getAccessToken = useGetAccessToken(accessToken, getNewTokens);
 
