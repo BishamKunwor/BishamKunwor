@@ -2,12 +2,14 @@ import type { AxiosInstance } from "axios";
 import type { PropsWithChildren } from "react";
 import type useDedupeNewTokenRequest from "./use-dedupe-new-token-request";
 
+type AccessTokenCallback = () => Promise<{ accessToken?: string } | undefined>;
+
 export type AuthContextType =
   | {
       isAuthenticated: boolean;
       signIn: (accessToken: string) => void;
       signOut: () => void;
-      getAccessToken: () => Promise<string>;
+      getAccessToken: () => Promise<string | undefined>;
     }
   | undefined;
 
@@ -17,7 +19,7 @@ export interface AuthProviderProps extends PropsWithChildren {
     accessToken?: string;
   };
   debug?: boolean;
-  getAccessToken: () => Promise<{ accessToken: string }>;
+  getAccessToken: AccessTokenCallback;
   onSignOut: () => any;
   onSignIn?: (accessToken: string) => any;
 }
@@ -29,14 +31,14 @@ export type RefreshDedupeUnion =
     }
   | {
       isFetchingTokens: true;
-      refetchAxiosInstance: Promise<{ accessToken: string }>;
+      refetchAxiosInstance: ReturnType<AuthProviderProps["getAccessToken"]>;
     };
 
 export type ReactUseState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export interface UseDedupeNewTokenRequestProps {
   setAccessToken: ReactUseState<string | undefined>;
-  getAccessToken: () => Promise<{ accessToken: string }>;
+  getAccessToken: AuthProviderProps["getAccessToken"];
 }
 
 export interface UseRequestHandlerProps {

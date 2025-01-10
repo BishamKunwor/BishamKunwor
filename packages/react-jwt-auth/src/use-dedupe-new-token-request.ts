@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 import type { UseDedupeNewTokenRequestProps } from "./types";
 import { RefreshDedupeUnion } from "./types";
-import { devlog, isTokenValid } from "./helpers";
+import { devlog, isEmpty, isTokenValid } from "./helpers";
 
 export default function useDedupeNewTokenRequest({
   getAccessToken,
@@ -41,14 +41,20 @@ export default function useDedupeNewTokenRequest({
 
       resetDedupeRef();
 
-      if (isTokenValid(tokenResponse.accessToken)) {
-        setAccessToken(tokenResponse.accessToken);
-        return tokenResponse;
+      if (isEmpty(tokenResponse) || isEmpty(tokenResponse.accessToken)) {
+        throw new Error(
+          "AUTH-ERROR: Received undefined when invoking getAccessToken function"
+        );
       }
 
-      throw new Error(
-        "AUTH-ERROR: (Invalid Token) Received Invalid JWT Token while fetching for new Token"
-      );
+      if (!isTokenValid(tokenResponse.accessToken)) {
+        throw new Error(
+          "AUTH-ERROR: (Invalid Token) Received Invalid JWT Token while fetching for new Token"
+        );
+      }
+
+      setAccessToken(tokenResponse.accessToken);
+      return tokenResponse;
     } catch (error) {
       devlog("AUTH-ERROR", error);
       setAccessToken(undefined);

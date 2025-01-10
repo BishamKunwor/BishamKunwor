@@ -18,12 +18,12 @@ export default function useResponseHandler({
 
         try {
           if (error.status !== 401) {
-            return await Promise.reject(error);
+            return Promise.reject(error);
           }
 
           // If token is empty then we do not proceed with getting new tokens
           if (isEmpty(accessToken)) {
-            return await Promise.reject(error);
+            return Promise.reject(error);
           }
 
           devlog(`AUTH-LOG: Access Token Expired For ${error.config?.url}`);
