@@ -1,0 +1,20 @@
+{
+  "name": "@bisham/query-factory",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {},
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.67.1"
+  },
+  "keywords": [
+    "query-factory",
+    "react-query"
+  ],
+  "author": {
+    "name": "Bisham Kunwor",
+    "email": "novelian.nova@gmail.com",
+    "url": "https://bishamkunwor.com.np"
+  },
+  "license": "MIT",
+  "description": ""
+}
