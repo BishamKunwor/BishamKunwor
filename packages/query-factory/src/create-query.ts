@@ -1,4 +1,5 @@
 import {
+  type QueryClient,
   useQuery,
   type DefaultError,
   type QueryKey,
@@ -16,7 +17,8 @@ export default function createQuery<
   factoryOptions: Omit<
     QueryOptionsObj<TQueryFnData, TError, TData, TQueryKey, TParams>,
     "select"
-  >
+  >,
+  factoryQueryClient: QueryClient
 ) {
   const queryIntance = <TData = TQueryFnData>(
     ...[queryInstanceOptions, queryClient]: QueryInstanceProps<
@@ -41,7 +43,17 @@ export default function createQuery<
         // @ts-ignore
         queryKey: factoryOptions.queryKey(queryInstanceOptions?.params),
       },
-      queryClient
+      factoryQueryClient ?? queryClient
+    );
+
+  queryIntance.getQueryKey = (
+    ...queryKeyParams: TParams extends undefined
+      ? []
+      : [queryParams: { params: TParams }]
+  ) =>
+    factoryOptions.queryKey(
+      // @ts-expect-error
+      queryKeyParams[0]?.params
     );
 
   return queryIntance;
