@@ -56,5 +56,48 @@ export default function createQuery<
       queryKeyParams[0]?.params
     );
 
+  queryIntance.getQueryOptions = (
+    ...[queryInstanceOptions]: QueryInstanceProps<
+      TQueryFnData,
+      TError,
+      TData,
+      TQueryKey,
+      TParams
+    >
+  ) => ({
+    ...factoryOptions,
+    ...queryInstanceOptions,
+    // @ts-ignore
+    queryFn: (props) =>
+      // @ts-ignore
+      factoryOptions.queryFn({
+        ...props,
+        // @ts-ignore
+        params: queryInstanceOptions?.params,
+      }),
+    // @ts-ignore
+    queryKey: factoryOptions.queryKey(queryInstanceOptions?.params),
+  });
+
+  queryIntance.getQueryData = () => {};
+  queryIntance.getAllQueryData = () => {};
+
+  queryIntance.prefetchQuery = () => {};
+
+  queryIntance.refetchQuery = () => {};
+  queryIntance.refetchAllQueries = () => {};
+
+  queryIntance.setQueryData = () => {};
+  queryIntance.setQueriesData = () => {};
+
+  queryIntance.invalidateQuery = () => {};
+  queryIntance.invalidateAllQueries = () => {};
+
+  queryIntance.removeQueryData = () => {};
+  queryIntance.removeAllQueries = () =>
+    factoryQueryClient.invalidateQueries({
+      queryKey: ["hello"],
+    });
+
   return queryIntance;
 }
