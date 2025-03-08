@@ -21,7 +21,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BishamKunwor/BishamKunwor.git",
+    "url": "https://github.com/BishamKunwor/BishamKunwor/tree/main/packages/query-factory",
     "directory": "packages/query-factory"
   },
   "description": "A Strongly Typed Query Factory For React Query.",
