@@ -140,16 +140,18 @@ export default function createQuery<
       ),
     }) as Array<[TQueryKey, TInferredQueryFnData | undefined]>;
 
+  type PrefetchQueryOptions = Omit<
+    FetchQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
+    "queryKey" | "queryFn"
+  >;
   queryIntance.prefetchQuery = (
-    options: Omit<
-      FetchQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
-      "queryKey" | "queryFn"
-    > &
-      TParams extends undefined
-      ? {}
-      : { params: TParams }
+    ...[options]: TParams extends undefined
+      ? [options?: PrefetchQueryOptions]
+      : [options: PrefetchQueryOptions & { params: TParams }]
   ) =>
+    // @ts-ignore
     factoryQueryClient.prefetchQuery({
+      // @ts-ignore
       ...factoryOptions,
       ...options,
       // @ts-ignore
