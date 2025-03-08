@@ -3,8 +3,14 @@ import {
   useQuery,
   type DefaultError,
   type QueryKey,
-  QueryFilters,
-  FetchQueryOptions,
+  type QueryFilters,
+  type FetchQueryOptions,
+  type RefetchOptions,
+  type RefetchQueryFilters,
+  SetDataOptions,
+  Updater,
+  InvalidateQueryFilters,
+  InvalidateOptions,
 } from "@tanstack/react-query";
 
 import type { QueryInstanceProps, QueryOptionsObj } from "./types";
@@ -124,18 +130,13 @@ export default function createQuery<
       ? TData
       : TQueryFnData
   >(
-    filters?: Omit<TQueryFilters, "queryKey"> & TParams extends undefined
-      ? {}
-      : { params: TParams }
+    filters?: Omit<TQueryFilters, "queryKey">
   ) =>
     factoryQueryClient.getQueriesData({
       ...filters,
       queryKey: getStringArrFromQueryKey(
         // @ts-ignore
-        getQueryKey({
-          // @ts-ignore
-          params: filters?.params as TParams,
-        })
+        getQueryKey()
       ),
     }) as Array<[TQueryKey, TInferredQueryFnData | undefined]>;
 
@@ -166,14 +167,123 @@ export default function createQuery<
         }),
     });
 
-  queryIntance.refetchQuery = () => {};
-  queryIntance.refetchAllQueries = () => {};
+  queryIntance.refetchQuery = (
+    filters?: Omit<
+      RefetchQueryFilters<TQueryFnData, TError, TData, TQueryKey>,
+      "queryKey" | "exact"
+    > &
+      TParams extends undefined
+      ? {}
+      : { params: TParams },
+    options?: RefetchOptions
+  ) =>
+    factoryQueryClient.refetchQueries(
+      {
+        ...filters,
+        exact: true,
+        // @ts-ignore
+        queryKey: getQueryKey({ params: filters?.params as TParams }),
+      },
+      options
+    );
 
-  queryIntance.setQueryData = () => {};
-  queryIntance.setQueriesData = () => {};
+  queryIntance.refetchAllQueries = (
+    filters?: Omit<
+      RefetchQueryFilters<TQueryFnData, TError, TData, TQueryKey>,
+      "queryKey"
+    >,
+    options?: RefetchOptions
+  ) =>
+    factoryQueryClient.refetchQueries(
+      {
+        ...filters,
+        // @ts-ignore
+        queryKey: getStringArrFromQueryKey(
+          // @ts-ignore
+          getQueryKey()
+        ),
+      },
+      options
+    );
 
-  queryIntance.invalidateQuery = () => {};
-  queryIntance.invalidateAllQueries = () => {};
+  queryIntance.setQueryData = (
+    options: {
+      updater: Updater<NoInfer<TData> | undefined, NoInfer<TData> | undefined>;
+      options?: SetDataOptions;
+    } & (TParams extends undefined ? {} : { params: TParams })
+  ) =>
+    factoryQueryClient.setQueryData<TData, TQueryKey>(
+      // @ts-ignore
+      getQueryKey({
+        // @ts-ignore
+        params: options?.params as TParams,
+      }),
+      options.updater as any,
+      options.options
+    );
+
+  queryIntance.setQueriesData = <
+    TQueryFilters extends QueryFilters<any, any, any, any> = QueryFilters<
+      TQueryFnData,
+      TError,
+      TData,
+      TQueryKey
+    >
+  >(options: {
+    filters: Omit<TQueryFilters, "queryKey"> &
+      (TParams extends undefined ? {} : { params: TParams });
+    updater: Updater<NoInfer<TData> | undefined, NoInfer<TData> | undefined>;
+    options?: SetDataOptions;
+  }) =>
+    factoryQueryClient.setQueriesData(
+      {
+        ...options.filters,
+        queryKey:
+          // @ts-ignore
+          getQueryKey(options.filters.params as TParams),
+      },
+      // @ts-ignore
+      options.updater,
+      options.options
+    );
+
+  queryIntance.invalidateQuery = (
+    filters?: Omit<
+      InvalidateQueryFilters<TQueryFnData, TError, TData, TQueryKey>,
+      "queryKey" | "exact"
+    > &
+      (TParams extends undefined ? {} : { params: TParams }),
+    options?: InvalidateOptions
+  ) =>
+    factoryQueryClient.invalidateQueries(
+      // @ts-ignore
+      {
+        ...filters,
+        exact: true,
+        // @ts-ignore
+        queryKey: getQueryKey(),
+      },
+      options
+    );
+
+  queryIntance.invalidateAllQueries = (
+    filters?: Omit<
+      InvalidateQueryFilters<TQueryFnData, TError, TData, TQueryKey>,
+      "queryKey"
+    >,
+    options?: InvalidateOptions
+  ) =>
+    factoryQueryClient.invalidateQueries(
+      {
+        ...filters,
+        // @ts-ignore
+        queryKey: getStringArrFromQueryKey(
+          // @ts-ignore
+          getQueryKey()
+        ),
+      },
+      options
+    );
 
   queryIntance.removeQueryData = (
     filters?: Omit<
@@ -195,20 +305,14 @@ export default function createQuery<
     filters?: Omit<
       QueryFilters<TQueryFnData, TError, TData, TQueryKey>,
       "queryKey"
-    > &
-      TParams extends undefined
-      ? {}
-      : { params: TParams }
+    >
   ) =>
     factoryQueryClient.removeQueries({
       ...filters,
       // @ts-ignore
       queryKey: getStringArrFromQueryKey(
         // @ts-ignore
-        getQueryKey({
-          // @ts-ignore
-          params: filters?.params as TParams,
-        })
+        getQueryKey()
       ),
     });
 
