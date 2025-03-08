@@ -4,6 +4,7 @@ import {
   type DefaultError,
   type QueryKey,
   QueryFilters,
+  FetchQueryOptions,
 } from "@tanstack/react-query";
 
 import type { QueryInstanceProps, QueryOptionsObj } from "./types";
@@ -138,7 +139,32 @@ export default function createQuery<
       ),
     }) as Array<[TQueryKey, TInferredQueryFnData | undefined]>;
 
-  queryIntance.prefetchQuery = () => {};
+  queryIntance.prefetchQuery = (
+    options: Omit<
+      FetchQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
+      "queryKey" | "queryFn"
+    > &
+      TParams extends undefined
+      ? {}
+      : { params: TParams }
+  ) =>
+    factoryQueryClient.prefetchQuery({
+      ...factoryOptions,
+      ...options,
+      // @ts-ignore
+      queryKey: getQueryKey({
+        // @ts-ignore
+        params: options?.params,
+      }),
+      // @ts-ignore
+      queryFn: (props) =>
+        // @ts-ignore
+        factoryOptions.queryFn({
+          ...props,
+          // @ts-ignore
+          params: options?.params,
+        }),
+    });
 
   queryIntance.refetchQuery = () => {};
   queryIntance.refetchAllQueries = () => {};
