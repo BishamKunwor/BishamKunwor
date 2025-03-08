@@ -48,6 +48,14 @@ export interface TodoItem {
   completed: boolean;
 }
 
+export interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+}
+
 // Create a query for fetching todos by ID
 export const useGetTodos = createQuery(
   {
@@ -63,27 +71,6 @@ export const useGetTodos = createQuery(
   },
   queryClient
 );
-```
-
-### Example: Fetching Users
-
-Create a query to fetch a list of users:
-
-```typescript
-import { createQuery } from "@bisham/query-factory";
-import axios from "axios";
-import { QueryClient } from "@tanstack/react-query";
-
-// Reuse the React Query client
-export const queryClient = new QueryClient();
-
-export interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-}
 
 // Create a query for fetching users
 export const useGetUsers = createQuery(
