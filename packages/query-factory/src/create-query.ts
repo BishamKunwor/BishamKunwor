@@ -149,8 +149,42 @@ export default function createQuery<
   queryIntance.invalidateQuery = () => {};
   queryIntance.invalidateAllQueries = () => {};
 
-  queryIntance.removeQueryData = () => {};
-  queryIntance.removeAllQueries = () => {};
+  queryIntance.removeQueryData = (
+    filters?: Omit<
+      QueryFilters<TQueryFnData, TError, TData, TQueryKey>,
+      "queryKey"
+    > &
+      TParams extends undefined
+      ? {}
+      : { params: TParams }
+  ) =>
+    factoryQueryClient.removeQueries({
+      ...filters,
+      exact: true,
+      // @ts-ignore
+      queryKey: getQueryKey({ params: filters?.params as TParams }),
+    });
+
+  queryIntance.removeAllQueries = (
+    filters?: Omit<
+      QueryFilters<TQueryFnData, TError, TData, TQueryKey>,
+      "queryKey"
+    > &
+      TParams extends undefined
+      ? {}
+      : { params: TParams }
+  ) =>
+    factoryQueryClient.removeQueries({
+      ...filters,
+      // @ts-ignore
+      queryKey: getStringArrFromQueryKey(
+        // @ts-ignore
+        getQueryKey({
+          // @ts-ignore
+          params: filters?.params as TParams,
+        })
+      ),
+    });
 
   return queryIntance;
 }
