@@ -1,6 +1,6 @@
 {
   "name": "@bisham/query-factory",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -11,7 +11,9 @@
   },
   "keywords": [
     "query-factory",
-    "react-query"
+    "react-query",
+    "query",
+    "tanstack-query"
   ],
   "author": {
     "name": "Bisham Kunwor",
@@ -24,7 +26,7 @@
     "url": "https://github.com/BishamKunwor/BishamKunwor/tree/main/packages/query-factory",
     "directory": "packages/query-factory"
   },
-  "description": "A Strongly Typed Query Factory For React Query.",
+  "description": "A simple, type-safe utility to create and manage React Query queries effortlessly.",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
