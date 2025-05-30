@@ -121,25 +121,17 @@ export type GetFactoryQueryReturnWithoutParams<
     options?: SetDataOptions;
   }) => NoInfer<TQueryFnData> | undefined;
 
-  removeQueryData: (
-    filters?: OmitKeyof<QueryFilters, "queryKey" | "exact">
-  ) => void;
+  removeQueryData: (filters?: OmitKeyof<QueryFilters, "queryKey">) => void;
 
   removeAllQueriesData: (filters?: OmitKeyof<QueryFilters, "queryKey">) => void;
 
   invalidateQuery: (params?: {
-    filters?: OmitKeyof<
-      InvalidateQueryFilters<TQueryKey>,
-      "queryKey" | "exact"
-    >;
+    filters?: OmitKeyof<InvalidateQueryFilters<TQueryKey>, "queryKey">;
     options?: InvalidateOptions;
   }) => Promise<InferDataFromTag<TQueryFnData, TQueryKey> | undefined>;
 
   invalidateAllQueries: (params?: {
-    filters?: OmitKeyof<
-      InvalidateQueryFilters<TQueryKey>,
-      "queryKey" | "exact"
-    >;
+    filters?: OmitKeyof<InvalidateQueryFilters<TQueryKey>, "queryKey">;
     options?: InvalidateOptions;
   }) => Promise<Array<[TQueryKey, TQueryFnData | undefined]>>;
 
@@ -151,12 +143,12 @@ export type GetFactoryQueryReturnWithoutParams<
   ) => Promise<InferDataFromTag<TQueryFnData, TQueryKey> | undefined>;
 
   refetchQuery: (params?: {
-    filters?: RefetchQueryFilters<TQueryKey>;
+    filters?: OmitKeyof<RefetchQueryFilters<TQueryKey>, "queryKey">;
     options?: RefetchOptions;
   }) => Promise<InferDataFromTag<TQueryFnData, TQueryKey> | undefined>;
 
   refetchAllQueries: (params?: {
-    filters?: RefetchQueryFilters<TQueryKey>;
+    filters?: OmitKeyof<RefetchQueryFilters<TQueryKey>, "queryKey">;
     options?: RefetchOptions;
   }) => Promise<Array<[TQueryKey, TQueryFnData | undefined]>>;
 };
@@ -223,7 +215,7 @@ export type GetFactoryQueryReturnWithParams<
   }) => NoInfer<TQueryFnData> | undefined;
 
   removeQueryData: (
-    filters: OmitKeyof<QueryFilters, "queryKey" | "exact"> & {
+    filters: OmitKeyof<QueryFilters, "queryKey"> & {
       params: TParams;
     }
   ) => void;
@@ -231,19 +223,13 @@ export type GetFactoryQueryReturnWithParams<
   removeAllQueriesData: (filters?: OmitKeyof<QueryFilters, "queryKey">) => void;
 
   invalidateQuery: (params: {
-    filters?: OmitKeyof<
-      InvalidateQueryFilters<TQueryKey>,
-      "queryKey" | "exact"
-    >;
+    filters?: OmitKeyof<InvalidateQueryFilters<TQueryKey>, "queryKey">;
     params: TParams;
     options?: InvalidateOptions;
   }) => Promise<InferDataFromTag<TQueryFnData, TQueryKey> | undefined>;
 
   invalidateAllQueries: (params?: {
-    filters?: OmitKeyof<
-      InvalidateQueryFilters<TQueryKey>,
-      "queryKey" | "exact"
-    >;
+    filters?: OmitKeyof<InvalidateQueryFilters<TQueryKey>, "queryKey">;
     options?: InvalidateOptions;
   }) => Promise<Array<[TQueryKey, TQueryFnData | undefined]>>;
 
@@ -257,13 +243,13 @@ export type GetFactoryQueryReturnWithParams<
   ) => Promise<InferDataFromTag<TQueryFnData, TQueryKey> | undefined>;
 
   refetchQuery: (params: {
-    filters?: RefetchQueryFilters<TQueryKey>;
+    filters?: OmitKeyof<RefetchQueryFilters<TQueryKey>, "queryKey">;
     params: TParams;
     options?: RefetchOptions;
   }) => Promise<InferDataFromTag<TQueryFnData, TQueryKey> | undefined>;
 
   refetchAllQueries: (params?: {
-    filters?: RefetchQueryFilters<TQueryKey>;
+    filters?: OmitKeyof<RefetchQueryFilters<TQueryKey>, "queryKey">;
     options?: RefetchOptions;
   }) => Promise<Array<[TQueryKey, TQueryFnData | undefined]>>;
 };

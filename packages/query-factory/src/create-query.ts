@@ -253,14 +253,13 @@ export function createQuery(
     );
 
   const removeQueryData = (
-    params?: OmitKeyof<QueryFilters, "queryKey" | "exact"> & {
+    params?: OmitKeyof<QueryFilters, "queryKey"> & {
       params?: unknown;
     }
   ) =>
     factoryQueryClient.removeQueries({
       ...params,
       queryKey: getQueryKey({ params: params?.params }),
-      exact: true,
     });
 
   const removeAllQueriesData = (params?: OmitKeyof<QueryFilters, "queryKey">) =>
@@ -272,7 +271,7 @@ export function createQuery(
     });
 
   const invalidateQuery = async (invalidateQueryParams?: {
-    filters?: OmitKeyof<InvalidateQueryFilters, "queryKey" | "exact">;
+    filters?: OmitKeyof<InvalidateQueryFilters, "queryKey">;
     params?: unknown;
     options?: InvalidateOptions;
   }) => {
@@ -281,7 +280,7 @@ export function createQuery(
     const queryKey = getQueryKey({ params });
 
     await factoryQueryClient.invalidateQueries(
-      { ...filters, exact: true, queryKey },
+      { ...filters, queryKey },
       options
     );
 
@@ -326,10 +325,7 @@ export function createQuery(
 
     const queryKey = getQueryKey({ params });
 
-    await factoryQueryClient.refetchQueries(
-      { ...filters, queryKey, exact: true },
-      options
-    );
+    await factoryQueryClient.refetchQueries({ ...filters, queryKey }, options);
 
     return getQueryData({ params });
   };
