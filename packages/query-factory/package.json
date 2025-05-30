@@ -1,6 +1,6 @@
 {
   "name": "@bisham/query-factory",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -13,7 +13,8 @@
     "query-factory",
     "react-query",
     "query",
-    "tanstack-query"
+    "tanstack-query",
+    "create-query"
   ],
   "author": {
     "name": "Bisham Kunwor",
