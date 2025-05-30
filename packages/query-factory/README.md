@@ -1,10 +1,10 @@
 # @bisham/query-factory
 
-A simple, type-safe utility to create and manage React Query queries effortlessly. This package helps you create queries with consistent keys and offers helper methods to work with your queries in both React components and vanilla JavaScript.
+A simple, type-safe utility to create and manage React Query queries effortlessly. This package helps you create queries with consistent keys and offers helper methods to work with your queries in React application.
 
 ## Introduction
 
-`@bisham/query-factory` is designed to simplify your work with [React Query](https://tanstack.com/query/v4) by letting you create query functions with a consistent query key pattern and providing a range of helper methods to manage your queries. Whether you're working in a React component or in vanilla JavaScript, this package has got you covered.
+`@bisham/query-factory` is designed to simplify your work with [React Query](https://tanstack.com/query/v5) by letting you create query functions with a consistent query key pattern and providing a range of helper methods to manage your queries.
 
 ## Installation
 
@@ -27,6 +27,7 @@ yarn add @bisham/query-factory
 The package exposes a `createQuery` function that helps you set up your query by defining:
 
 - A **query key**: to uniquely identify the query.
+
 - A **query function**: to fetch the data.
 
 ### Example: Fetching Todos
@@ -59,9 +60,7 @@ export interface User {
 // Create a query for fetching todos by ID
 export const useGetTodos = createQuery(
   {
-    // Define a dynamic query key using parameters
     queryKey: (params: { id: string | number }) => ["todos", params],
-    // Define the function to fetch the todo item
     queryFn: ({ params }) =>
       axios
         .get<TodoItem>(
@@ -75,14 +74,11 @@ export const useGetTodos = createQuery(
 // Create a query for fetching users
 export const useGetUsers = createQuery(
   {
-    // Use a static query key for a list of users and optionally include queryOptions
     queryKey: () => ["user", "list"],
-    // Define the function to fetch the users list and optionally include queryOptions
     queryFn: () =>
       axios
         .get<User[]>(`https://jsonplaceholder.typicode.com/users`)
         .then((res) => res.data),
-    // Optionally set how long the data is considered fresh (1 minute)
     staleTime: 60 * 1000,
   },
   queryClient
@@ -91,134 +87,114 @@ export const useGetUsers = createQuery(
 
 ## Using the Queries in React
 
-Once you have defined your queries, you can use them directly in your React components. Here’s an example:
+Once you have defined your queries, you can use them directly in your React components:
 
 ```jsx
-import React from 'react';
-import { useGetTodos, useGetUsers } from './your-query-file';
+import React from "react";
+import { useGetTodos, useGetUsers } from "./your-query-file";
 
 function App() {
-    // Fetch a todo item with id 1 and optionally include queryOptions
-    const { data: todoData, isLoading: todosLoading } = useGetTodos({ params: { id: 1 }, staleTime: 5 * 60 * 1000 });
-    // Fetch a list of users and optionally include queryOptions and overide defaults
-    const { data: usersData, isLoading: usersLoading } = useGetUsers({staleTime: 5 * 60 * 1000);
+  const { data: todoData, isLoading: todosLoading } = useGetTodos({
+    params: { id: 1 },
+    staleTime: 5 * 60 * 1000,
+  });
+  const { data: usersData, isLoading: usersLoading } = useGetUsers({
+    staleTime: 5 * 60 * 1000,
+  });
 
-    if (todosLoading || usersLoading) return <div>Loading...</div>;
+  if (todosLoading || usersLoading) return <div>Loading...</div>;
 
-    return (
-        <div>
-            <h1>Todo Item</h1>
-            <p>{todoData?.title}</p>
+  return (
+    <div>
+      <h1>Todo Item</h1>
+      <p>{todoData?.title}</p>
 
-            <h1>User List</h1>
-            <ul>
-                {usersData.map(user => (
-                    <li key={user.id}>
-                        {user.name} - {user.email}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+      <h1>User List</h1>
+      <ul>
+        {usersData.map((user) => (
+          <li key={user.id}>
+            {user.name} - {user.email}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default App;
 ```
 
-## Advanced Usage
+## Helper Methods
 
-`@bisham/query-factory` provides several helper functions that make it easy to interact with your queries beyond just fetching data.
+When you create a query using `createQuery`, it not only returns a React Query hook but also provides a range of **helper methods** to manage your queries more effectively:
 
-### Helper Functions
+| Method                 | Description                                               |
+| ---------------------- | --------------------------------------------------------- |
+| `getQueryKey`          | Get the query key for a given set of params.              |
+| `getQueryOptions`      | Get the React Query options for a given set of params.    |
+| `getQueryData`         | Retrieve cached data for a given set of params.           |
+| `getQueriesData`       | Retrieve all matching cached data for the base query key. |
+| `setQueryData`         | Set or update cached data for a given set of params.      |
+| `removeQueryData`      | Remove cached data for a specific query instance.         |
+| `removeAllQueriesData` | Remove all cached data that match the base query key.     |
+| `invalidateQuery`      | Invalidate (mark stale) a specific query instance.        |
+| `invalidateAllQueries` | Invalidate all queries matching the base query key.       |
+| `prefetch`             | Prefetch data for a specific query instance.              |
+| `refetchQuery`         | Refetch data for a specific query instance.               |
+| `refetchAllQueries`    | Refetch all queries matching the base query key.          |
 
-- **Get Query Key**
-  Retrieve the query key for a specific query.
+### Example Usage of Helper Methods
 
-  ```typescript
-  const todoQueryKey = useGetTodos.getQueryKey({ params: { id: 1 } });
-  const userQueryKey = useGetUsers.getQueryKey();
-  ```
+```typescript
+// Get the query key for a todo
+const todoQueryKey = useGetTodos.getQueryKey({ params: { id: 1 } });
+const userQueryKey = useGetUsers.getQueryKey();
 
-- **Get Query Options**
-  Retrieve the options used for a query.
+// Get cached data
+const todoData = useGetTodos.getQueryData({ params: { id: 1 } });
+const allUserData = useGetUsers.getQueriesData();
 
-  ```typescript
-  const todoQueryOptions = useGetTodos.getQueryOptions({ params: { id: 1 } });
-  const userQueryOptions = useGetUsers.getQueryOptions();
-  ```
+// Invalidate and refetch data
+await useGetTodos.invalidateQuery({ params: { id: 1 } });
+await useGetUsers.invalidateAllQueries();
+await useGetUsers.refetchAllQueries();
 
-- **Access Query Data**
-  Get the cached data for a query.
+// Prefetch data
+await useGetTodos.prefetch({ params: { id: 2 } });
 
-  ```typescript
-  const todoData = useGetTodos.getQueryData({ params: { id: 1 } });
-  const allUsersData = useGetUsers.getQueryData();
-  ```
+// Update cached data
+useGetTodos.setQueryData({
+  params: { id: 42 },
+  updater: {
+    userId: 4242,
+    id: 42,
+    title: "Updated Todo",
+    completed: true,
+  },
+});
 
-- **Refetching Queries**
-  Manually refetch queries when needed.
-
-  ```typescript
-  useGetTodos.refetchQuery({ params: { id: 1 } });
-  useGetUsers.refetchQuery();
-  // To refetch all queries that match the key pattern:
-  useGetTodos.refetchAllQueries();
-  ```
-
-- **Prefetching Data**
-  Load data in advance.
-
-  ```typescript
-  useGetTodos.prefetchQuery({ params: { id: 2 } });
-  useGetUsers.prefetchQuery();
-  ```
-
-- **Setting Query Data**
-  Manually update the query data.
-
-  ```typescript
-  useGetTodos.setQueryData({
-    params: { id: 100 },
-    updater: {
-      userId: 4242,
-      id: 42,
-      title: "Example Todo",
-      completed: false,
-    },
-  });
-  ```
-
-- **Invalidating and Removing Queries**
-  Invalidate or remove queries from the cache.
-
-  ```typescript
-  useGetTodos.invalidateQuery({ params: { id: 1 } });
-  useGetUsers.invalidateQuery();
-
-  // Invalidate or remove all queries that match the key pattern:
-  useGetTodos.invalidateAllQueries();
-  useGetUsers.removeAllQueries();
-  ```
+// Remove cached data
+useGetTodos.removeQueryData({ params: { id: 42 } });
+useGetUsers.removeAllQueriesData();
+```
 
 ## API Overview
 
-When you use the `createQuery` function, you pass two main arguments:
+When you use `createQuery`, you provide:
 
 1.  **Configuration Object**:
 
-    - `queryKey`: A function (or static value) that returns a unique key for the query. When using a function, you can pass parameters.
-    - `queryFn`: The function that fetches your data. This function receives an object with the `params` passed in.
-    - Other React Query options (like `staleTime`) can also be included.
+    - `queryKey`: A static key or a function to generate a dynamic key.
+
+    - `queryFn`: The function to fetch the data, which receives `{ params }` when using dynamic keys.
+
+    - Other React Query options (like `staleTime`) can be included.
 
 2.  **Query Client**:
-    Pass your instance of React Query's `QueryClient` to enable features such as prefetching and cache invalidation.
 
-The returned query object includes helper methods to:
+    - Pass your instance of React Query's `QueryClient`.
 
-- Get the query key or options.
-- Access, set, and remove query data.
-- Refetch or prefetch queries.
-- Invalidate queries.
+The returned hook has the **same signature as `useQuery`**, plus **powerful helper methods** to manage your queries' lifecycle and cached data.
 
 ## Contributing
 
