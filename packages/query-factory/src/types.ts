@@ -25,7 +25,7 @@ import type {
 export type QueryFunctionContextObj<TQueryKey extends QueryKey = QueryKey> =
   QueryFunctionContext<TQueryKey>;
 
-export type GetFactoryQueryOptionsWithoutParams<
+type GetFactoryQueryOptions<
   TQueryFnData = unknown,
   TError = DefaultError,
   TData = TQueryFnData,
@@ -43,6 +43,23 @@ export type GetFactoryQueryOptionsWithoutParams<
     ? DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
     : UseQueryOptions,
   "queryKey" | "queryFn" | "select"
+>;
+
+export type GetFactoryQueryOptionsWithoutParams<
+  TQueryFnData = unknown,
+  TError = DefaultError,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey,
+  TQueryOptions extends
+    | UndefinedInitialDataOptions
+    | UnusedSkipTokenOptions
+    | DefinedInitialDataOptions = UseQueryOptions
+> = GetFactoryQueryOptions<
+  TQueryFnData,
+  TError,
+  TData,
+  TQueryKey,
+  TQueryOptions
 > & {
   queryKey: () => TQueryKey;
   queryFn: QueryFunction<TQueryFnData, TQueryKey>;
@@ -58,15 +75,12 @@ export type GetFactoryQueryOptionsWithParams<
     | UnusedSkipTokenOptions
     | DefinedInitialDataOptions = UseQueryOptions,
   TParams extends Record<string, unknown> | undefined = undefined
-> = OmitKeyof<
-  TQueryOptions extends UndefinedInitialDataOptions
-    ? UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-    : TQueryOptions extends UnusedSkipTokenOptions
-    ? UnusedSkipTokenOptions<TQueryFnData, TError, TData, TQueryKey>
-    : TQueryOptions extends DefinedInitialDataOptions
-    ? DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-    : UseQueryOptions,
-  "queryKey" | "queryFn" | "select"
+> = GetFactoryQueryOptions<
+  TQueryFnData,
+  TError,
+  TData,
+  TQueryKey,
+  TQueryOptions
 > & {
   queryKey: (params: TParams) => TQueryKey;
   queryFn: (

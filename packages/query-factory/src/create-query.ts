@@ -3,8 +3,6 @@ import {
   QueryClient,
   queryOptions,
   useQuery,
-  type DefaultError,
-  type DefinedInitialDataOptions,
   type FetchQueryOptions,
   type InvalidateOptions,
   type InvalidateQueryFilters,
@@ -13,122 +11,17 @@ import {
   type QueryKey,
   type RefetchOptions,
   type RefetchQueryFilters,
-  type SetDataOptions,
-  type UndefinedInitialDataOptions,
-  type UnusedSkipTokenOptions,
+  type SetDataOptions
 } from "@tanstack/react-query";
 import type {
   GetFactoryQueryOptionsWithoutParams,
   GetFactoryQueryOptionsWithParams,
-  GetFactoryQueryReturnWithoutParams,
-  GetFactoryQueryReturnWithParams,
-  QueryFunctionContextObj,
+  QueryFunctionContextObj
 } from "./types";
 
-export function createQuery<
-  TQueryFnData = unknown,
-  TError = DefaultError,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey
->(
-  factoryOptions: GetFactoryQueryOptionsWithoutParams<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryKey,
-    DefinedInitialDataOptions
-  >,
-  factoryQueryClient: QueryClient
-): GetFactoryQueryReturnWithoutParams<TQueryFnData, TError, TQueryKey>;
-
-export function createQuery<
-  TQueryFnData = unknown,
-  TError = DefaultError,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey
->(
-  factoryOptions: GetFactoryQueryOptionsWithoutParams<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryKey,
-    UnusedSkipTokenOptions
-  >,
-  factoryQueryClient: QueryClient
-): GetFactoryQueryReturnWithoutParams<TQueryFnData, TError, TQueryKey>;
-
-export function createQuery<
-  TQueryFnData = unknown,
-  TError = DefaultError,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey
->(
-  factoryOptions: GetFactoryQueryOptionsWithoutParams<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryKey,
-    UndefinedInitialDataOptions
-  >,
-
-  factoryQueryClient: QueryClient
-): GetFactoryQueryReturnWithoutParams<TQueryFnData, TError, TQueryKey>;
-
-export function createQuery<
-  TQueryFnData = unknown,
-  TError = DefaultError,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey,
-  TParams extends Record<string, unknown> | undefined = undefined
->(
-  factoryOptions: GetFactoryQueryOptionsWithParams<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryKey,
-    DefinedInitialDataOptions,
-    TParams
-  >,
-  factoryQueryClient: QueryClient
-): GetFactoryQueryReturnWithParams<TQueryFnData, TError, TQueryKey, TParams>;
-
-export function createQuery<
-  TQueryFnData = unknown,
-  TError = DefaultError,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey,
-  TParams extends Record<string, unknown> | undefined = undefined
->(
-  factoryOptions: GetFactoryQueryOptionsWithParams<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryKey,
-    UnusedSkipTokenOptions,
-    TParams
-  >,
-  factoryQueryClient: QueryClient
-): GetFactoryQueryReturnWithParams<TQueryFnData, TError, TQueryKey, TParams>;
-
-export function createQuery<
-  TQueryFnData = unknown,
-  TError = DefaultError,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey,
-  TParams extends Record<string, unknown> | undefined = undefined
->(
-  factoryOptions: GetFactoryQueryOptionsWithParams<
-    TQueryFnData,
-    TError,
-    TData,
-    TQueryKey,
-    UndefinedInitialDataOptions,
-    TParams
-  >,
-
-  factoryQueryClient: QueryClient
-): GetFactoryQueryReturnWithParams<TQueryFnData, TError, TQueryKey, TParams>;
-
+/**
+ * @deprecated Please use the new createQueryFactory function instead.
+ */
 export function createQuery(
   factoryOptions:
     | GetFactoryQueryOptionsWithoutParams
