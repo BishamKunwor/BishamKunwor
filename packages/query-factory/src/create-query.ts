@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
+  DefaultError,
   QueryClient,
   queryOptions,
   useQuery,
@@ -11,17 +12,48 @@ import {
   type QueryKey,
   type RefetchOptions,
   type RefetchQueryFilters,
-  type SetDataOptions
+  type SetDataOptions,
 } from "@tanstack/react-query";
 import type {
   GetFactoryQueryOptionsWithoutParams,
   GetFactoryQueryOptionsWithParams,
-  QueryFunctionContextObj
+  GetFactoryQueryReturnWithoutParams,
+  GetFactoryQueryReturnWithParams,
+  QueryFunctionContextObj,
 } from "./types";
 
-/**
- * @deprecated Please use the new createQueryFactory function instead.
- */
+export function createQuery<
+  TQueryFnData = unknown,
+  TError = DefaultError,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey
+>(
+  factoryOptions: GetFactoryQueryOptionsWithoutParams<
+    TQueryFnData,
+    TError,
+    TData,
+    TQueryKey
+  >,
+  factoryQueryClient: QueryClient
+): GetFactoryQueryReturnWithoutParams<TQueryFnData, TError, TQueryKey>;
+
+export function createQuery<
+  TQueryFnData = unknown,
+  TError = DefaultError,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey,
+  TParams extends Record<string, unknown> | undefined = undefined
+>(
+  factoryOptions: GetFactoryQueryOptionsWithParams<
+    TQueryFnData,
+    TError,
+    TData,
+    TQueryKey,
+    TParams
+  >,
+  factoryQueryClient: QueryClient
+): GetFactoryQueryReturnWithParams<TQueryFnData, TError, TQueryKey, TParams>;
+
 export function createQuery(
   factoryOptions:
     | GetFactoryQueryOptionsWithoutParams

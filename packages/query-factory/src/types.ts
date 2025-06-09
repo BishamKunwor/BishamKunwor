@@ -2,7 +2,6 @@ import type {
   DataTag,
   DefaultError,
   DefinedInitialDataOptions,
-  DefinedUseQueryResult,
   FetchQueryOptions,
   InferDataFromTag,
   InvalidateOptions,
@@ -16,50 +15,21 @@ import type {
   RefetchQueryFilters,
   SetDataOptions,
   UndefinedInitialDataOptions,
-  UnusedSkipTokenOptions,
   Updater,
-  UseQueryOptions,
-  UseQueryResult,
+  UseQueryResult
 } from "@tanstack/react-query";
 
 export type QueryFunctionContextObj<TQueryKey extends QueryKey = QueryKey> =
   QueryFunctionContext<TQueryKey>;
 
-type GetFactoryQueryOptions<
-  TQueryFnData = unknown,
-  TError = DefaultError,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey,
-  TQueryOptions extends
-    | UndefinedInitialDataOptions
-    | UnusedSkipTokenOptions
-    | DefinedInitialDataOptions = UseQueryOptions
-> = OmitKeyof<
-  TQueryOptions extends UndefinedInitialDataOptions
-    ? UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-    : TQueryOptions extends UnusedSkipTokenOptions
-    ? UnusedSkipTokenOptions<TQueryFnData, TError, TData, TQueryKey>
-    : TQueryOptions extends DefinedInitialDataOptions
-    ? DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-    : UseQueryOptions,
-  "queryKey" | "queryFn" | "select"
->;
-
 export type GetFactoryQueryOptionsWithoutParams<
   TQueryFnData = unknown,
   TError = DefaultError,
   TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey,
-  TQueryOptions extends
-    | UndefinedInitialDataOptions
-    | UnusedSkipTokenOptions
-    | DefinedInitialDataOptions = UseQueryOptions
-> = GetFactoryQueryOptions<
-  TQueryFnData,
-  TError,
-  TData,
-  TQueryKey,
-  TQueryOptions
+  TQueryKey extends QueryKey = QueryKey
+> = OmitKeyof<
+  UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
+  "queryKey" | "queryFn" | "select"
 > & {
   queryKey: () => TQueryKey;
   queryFn: QueryFunction<TQueryFnData, TQueryKey>;
@@ -70,17 +40,10 @@ export type GetFactoryQueryOptionsWithParams<
   TError = DefaultError,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
-  TQueryOptions extends
-    | UndefinedInitialDataOptions
-    | UnusedSkipTokenOptions
-    | DefinedInitialDataOptions = UseQueryOptions,
   TParams extends Record<string, unknown> | undefined = undefined
-> = GetFactoryQueryOptions<
-  TQueryFnData,
-  TError,
-  TData,
-  TQueryKey,
-  TQueryOptions
+> = OmitKeyof<
+  UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
+  "queryKey" | "queryFn" | "select"
 > & {
   queryKey: (params: TParams) => TQueryKey;
   queryFn: (
@@ -95,28 +58,28 @@ export type GetFactoryQueryReturnWithoutParams<
 > = {
   <TData = TQueryFnData>(
     options?: OmitKeyof<
-      | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-      | UnusedSkipTokenOptions<TQueryFnData, TError, TData, TQueryKey>,
+      UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
       "queryKey" | "queryFn"
     >
   ): UseQueryResult<NoInfer<TData>, TError>;
 
-  <TData = TQueryFnData>(
-    options: OmitKeyof<DefinedInitialDataOptions, "queryKey" | "queryFn">
-  ): DefinedUseQueryResult<NoInfer<TData>, TError>;
+  // <TData = TQueryFnData>(
+  //   options?: OmitKeyof<
+  //     DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
+  //     "queryKey" | "queryFn"
+  //   >
+  // ): DefinedUseQueryResult<NoInfer<TData>, TError>;
 
   getQueryKey: () => DataTag<TQueryKey, TQueryFnData, TError>;
 
   getQueryOptions: <TData = TQueryFnData>(
     options?: OmitKeyof<
       | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-      | UnusedSkipTokenOptions<TQueryFnData, TError, TData, TQueryKey>
       | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
       "queryKey" | "queryFn"
     >
   ) => (
     | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-    | UnusedSkipTokenOptions<TQueryFnData, TError, TData, TQueryKey>
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
   ) & {
     queryKey: DataTag<TQueryKey, TQueryFnData, TError>;
@@ -175,22 +138,21 @@ export type GetFactoryQueryReturnWithParams<
 > = {
   <TData = TQueryFnData>(
     options: OmitKeyof<
-      | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-      | UnusedSkipTokenOptions<TQueryFnData, TError, TData, TQueryKey>,
+      UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
       "queryKey" | "queryFn"
     > & {
       params: TParams;
     }
   ): UseQueryResult<NoInfer<TData>, TError>;
 
-  <TData = TQueryFnData>(
-    options: OmitKeyof<
-      DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
-      "queryKey" | "queryFn"
-    > & {
-      params: TParams;
-    }
-  ): DefinedUseQueryResult<NoInfer<TData>, TError>;
+  // <TData = TQueryFnData>(
+  //   options: OmitKeyof<
+  //     DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
+  //     "queryKey" | "queryFn"
+  //   > & {
+  //     params: TParams;
+  //   }
+  // ): DefinedUseQueryResult<NoInfer<TData>, TError>;
 
   getQueryKey: (params: {
     params: TParams;
@@ -199,13 +161,11 @@ export type GetFactoryQueryReturnWithParams<
   getQueryOptions: <TData = TQueryFnData>(
     options?: OmitKeyof<
       | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-      | UnusedSkipTokenOptions<TQueryFnData, TError, TData, TQueryKey>
       | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
       "queryKey" | "queryFn"
     > & { params: TParams }
   ) => (
     | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-    | UnusedSkipTokenOptions<TQueryFnData, TError, TData, TQueryKey>
     | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
   ) & {
     queryKey: DataTag<TQueryKey, TQueryFnData, TError>;
