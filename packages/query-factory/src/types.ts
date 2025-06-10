@@ -1,7 +1,6 @@
 import type {
   DataTag,
   DefaultError,
-  DefinedInitialDataOptions,
   FetchQueryOptions,
   InferDataFromTag,
   InvalidateOptions,
@@ -63,25 +62,14 @@ export type GetFactoryQueryReturnWithoutParams<
     >
   ): UseQueryResult<NoInfer<TData>, TError>;
 
-  // <TData = TQueryFnData>(
-  //   options?: OmitKeyof<
-  //     DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
-  //     "queryKey" | "queryFn"
-  //   >
-  // ): DefinedUseQueryResult<NoInfer<TData>, TError>;
-
   getQueryKey: () => DataTag<TQueryKey, TQueryFnData, TError>;
 
   getQueryOptions: <TData = TQueryFnData>(
     options?: OmitKeyof<
-      | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-      | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
+      UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
       "queryKey" | "queryFn"
     >
-  ) => (
-    | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-    | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-  ) & {
+  ) => UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey> & {
     queryKey: DataTag<TQueryKey, TQueryFnData, TError>;
   };
 
@@ -145,29 +133,16 @@ export type GetFactoryQueryReturnWithParams<
     }
   ): UseQueryResult<NoInfer<TData>, TError>;
 
-  // <TData = TQueryFnData>(
-  //   options: OmitKeyof<
-  //     DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
-  //     "queryKey" | "queryFn"
-  //   > & {
-  //     params: TParams;
-  //   }
-  // ): DefinedUseQueryResult<NoInfer<TData>, TError>;
-
   getQueryKey: (params: {
     params: TParams;
   }) => DataTag<TQueryKey, TQueryFnData, TError>;
 
   getQueryOptions: <TData = TQueryFnData>(
     options?: OmitKeyof<
-      | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-      | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
+      UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>,
       "queryKey" | "queryFn"
     > & { params: TParams }
-  ) => (
-    | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-    | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-  ) & {
+  ) => UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey> & {
     queryKey: DataTag<TQueryKey, TQueryFnData, TError>;
   };
 
