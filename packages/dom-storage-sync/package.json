@@ -1,0 +1,36 @@
+{
+  "name": "@bisham/dom-storage-sync",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "author": {
+    "name": "Bisham Kunwor",
+    "email": "novelian.nova@gmail.com",
+    "url": "https://bishamkunwor.com.np"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BishamKunwor/BishamKunwor.git",
+    "directory": "packages/dom-storage-sync"
+  },
+  "keywords": [
+    "dom",
+    "storage",
+    "cookie",
+    "sync",
+    "storage sync"
+  ],
+  "license": "MIT",
+  "description": "A simple Js function that subscribes to storage change events i.e, localStorage, sessionStorage and Cookie Storage",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@types/node": "^24.0.10",
+    "rollup": "^4.44.2",
+    "rollup-plugin-dts": "^6.2.1",
+    "typescript": "^5.8.3"
+  }
+}
