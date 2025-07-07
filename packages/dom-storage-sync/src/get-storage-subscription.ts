@@ -1,89 +1,26 @@
-type Noop = () => void;
+import { getCookieSubscription } from "./get-cookie-subscription";
+import { getLocalAndSessionStorageSubscription } from "./get-local-and-session-storage-subscription";
 
-export const getStorageSubscription = (
+export function getStorageSubscription(
+  storageType: "cookieStorage"
+): ReturnType<typeof getCookieSubscription>;
+
+export function getStorageSubscription(
   storageType: "localStorage" | "sessionStorage"
-) => {
-  const Subscribers = new Set<Noop>();
+): ReturnType<typeof getLocalAndSessionStorageSubscription>;
 
-  const getStorage = () => {
-    if (storageType === "localStorage") {
-      return window.localStorage;
-    }
+export function getStorageSubscription(
+  storageType: "localStorage" | "sessionStorage" | "cookieStorage"
+) {
+  if (typeof window === "undefined") {
+    throw new Error(
+      `${getStorageSubscription.name} is a client component and must be called inside a browser environment`
+    );
+  }
 
-    if (storageType === "sessionStorage") {
-      return window.sessionStorage;
-    }
+  if (storageType === "cookieStorage") {
+    return getCookieSubscription();
+  }
 
-    throw new Error(`storageType with ${storageType} value is not valid`);
-  };
-
-  const getStorageValues = () => {
-    const {
-      clear,
-      getItem,
-      key,
-      length,
-      removeItem,
-      setItem,
-      ...storageValues
-    } = getStorage();
-
-    return storageValues as Record<string, string | null>;
-  };
-
-  const notifySubscribers = () =>
-    Subscribers.forEach((subscriber) => subscriber());
-
-  const subscribe = (subscriber: Noop) => {
-    Subscribers.add(subscriber);
-
-    const handler = (event: StorageEvent) => {
-      if (event.storageArea !== getStorage()) {
-        return;
-      }
-
-      subscriber();
-    };
-
-    window.addEventListener("storage", handler);
-
-    return () => {
-      window.removeEventListener("storage", handler);
-      Subscribers.delete(subscriber);
-    };
-  };
-
-  const initStorageCapture = () => {
-    if (typeof window === "undefined") {
-      throw new Error(
-        `${getStorageSubscription.name} is a client component and must be called inside a browser environment`
-      );
-    }
-
-    const storage = getStorage();
-
-    const { clear, removeItem, setItem } = storage;
-
-    storage.setItem = function (key: string, value: string) {
-      setItem.call(this, key, value);
-      notifySubscribers();
-    };
-
-    storage.removeItem = function (key: string) {
-      removeItem.call(this, key);
-      notifySubscribers();
-    };
-
-    storage.clear = function () {
-      clear.call(this);
-      notifySubscribers();
-    };
-  };
-
-  initStorageCapture();
-
-  return {
-    getSnapShot: getStorageValues,
-    subscribe,
-  };
-};
+  return getLocalAndSessionStorageSubscription(storageType);
+}
