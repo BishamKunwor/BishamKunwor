@@ -84,7 +84,6 @@ export const getStorageSubscription = (
 
   return {
     getSnapShot: getStorageValues,
-    initStorageCapture,
     subscribe,
   };
 };
