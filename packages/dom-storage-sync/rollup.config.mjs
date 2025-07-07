@@ -12,12 +12,10 @@ export default defineConfig([
       format: "esm",
     },
     plugins: [nodeResolve(), typescript(), terser()],
-    external: ["@tanstack/react-query"],
   },
   {
     input: "src/index.ts",
     output: [{ file: "dist/index.d.ts", format: "esm" }],
     plugins: [dts()],
-    external: ["@tanstack/react-query"],
   },
 ]);

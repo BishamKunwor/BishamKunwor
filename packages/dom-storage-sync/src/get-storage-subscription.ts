@@ -1,4 +1,4 @@
-import { Noop } from "../types";
+type Noop = () => void;
 
 export const getStorageSubscription = (
   storageType: "localStorage" | "sessionStorage"
