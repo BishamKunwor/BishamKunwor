@@ -1,10 +1,7 @@
 import {
   DefaultError,
-  DefinedInitialDataOptions,
   QueryClient,
-  QueryKey,
-  UndefinedInitialDataOptions,
-  UnusedSkipTokenOptions,
+  QueryKey
 } from "@tanstack/react-query";
 import { createQuery } from "./create-query";
 import {
@@ -25,38 +22,7 @@ export function createQueryFactory(queryClient: QueryClient) {
       TQueryFnData,
       TError,
       TData,
-      TQueryKey,
-      DefinedInitialDataOptions
-    >
-  ): GetFactoryQueryReturnWithoutParams<TQueryFnData, TError, TQueryKey>;
-
-  function createAppQuery<
-    TQueryFnData = unknown,
-    TError = DefaultError,
-    TData = TQueryFnData,
-    TQueryKey extends QueryKey = QueryKey
-  >(
-    factoryOptions: GetFactoryQueryOptionsWithoutParams<
-      TQueryFnData,
-      TError,
-      TData,
-      TQueryKey,
-      UnusedSkipTokenOptions
-    >
-  ): GetFactoryQueryReturnWithoutParams<TQueryFnData, TError, TQueryKey>;
-
-  function createAppQuery<
-    TQueryFnData = unknown,
-    TError = DefaultError,
-    TData = TQueryFnData,
-    TQueryKey extends QueryKey = QueryKey
-  >(
-    factoryOptions: GetFactoryQueryOptionsWithoutParams<
-      TQueryFnData,
-      TError,
-      TData,
-      TQueryKey,
-      UndefinedInitialDataOptions
+      TQueryKey
     >
   ): GetFactoryQueryReturnWithoutParams<TQueryFnData, TError, TQueryKey>;
 
@@ -72,42 +38,6 @@ export function createQueryFactory(queryClient: QueryClient) {
       TError,
       TData,
       TQueryKey,
-      DefinedInitialDataOptions,
-      TParams
-    >
-  ): GetFactoryQueryReturnWithParams<TQueryFnData, TError, TQueryKey, TParams>;
-
-  function createAppQuery<
-    TQueryFnData = unknown,
-    TError = DefaultError,
-    TData = TQueryFnData,
-    TQueryKey extends QueryKey = QueryKey,
-    TParams extends Record<string, unknown> | undefined = undefined
-  >(
-    factoryOptions: GetFactoryQueryOptionsWithParams<
-      TQueryFnData,
-      TError,
-      TData,
-      TQueryKey,
-      UnusedSkipTokenOptions,
-      TParams
-    >,
-    factoryQueryClient: QueryClient
-  ): GetFactoryQueryReturnWithParams<TQueryFnData, TError, TQueryKey, TParams>;
-
-  function createAppQuery<
-    TQueryFnData = unknown,
-    TError = DefaultError,
-    TData = TQueryFnData,
-    TQueryKey extends QueryKey = QueryKey,
-    TParams extends Record<string, unknown> | undefined = undefined
-  >(
-    factoryOptions: GetFactoryQueryOptionsWithParams<
-      TQueryFnData,
-      TError,
-      TData,
-      TQueryKey,
-      UndefinedInitialDataOptions,
       TParams
     >
   ): GetFactoryQueryReturnWithParams<TQueryFnData, TError, TQueryKey, TParams>;
