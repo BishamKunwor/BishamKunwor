@@ -11,7 +11,8 @@ export default defineConfig([
       dir: "dist",
       format: "esm",
     },
-    plugins: [nodeResolve(), typescript(), terser()],
+    // plugins: [nodeResolve(), typescript(), terser()],
+    plugins: [nodeResolve(), typescript()],
   },
   {
     input: "src/index.ts",

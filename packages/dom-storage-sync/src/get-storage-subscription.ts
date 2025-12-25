@@ -12,12 +12,6 @@ export function getStorageSubscription(
 export function getStorageSubscription(
   storageType: "localStorage" | "sessionStorage" | "cookieStorage"
 ) {
-  if (typeof window === "undefined") {
-    throw new Error(
-      `${getStorageSubscription.name} is a client component and must be called inside a browser environment`
-    );
-  }
-
   if (storageType === "cookieStorage") {
     return getCookieSubscription();
   }

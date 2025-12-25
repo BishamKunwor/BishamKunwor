@@ -1,4 +1,4 @@
-import { Noop } from "./types";
+import type { Noop } from "./types";
 
 export const getLocalAndSessionStorageSubscription = (
   storageType: "localStorage" | "sessionStorage"
@@ -74,7 +74,9 @@ export const getLocalAndSessionStorageSubscription = (
     };
   };
 
-  initStorageCapture();
+  if (typeof window !== "undefined") {
+    initStorageCapture();
+  }
 
   return {
     getSnapshot: getStorageValues,

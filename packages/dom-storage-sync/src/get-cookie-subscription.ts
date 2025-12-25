@@ -1,7 +1,7 @@
-import { Noop } from "./types";
+import type { Noop } from "./types";
 
 export const getCookieSubscription = () => {
-  const CookieDataStore = new Map<string, CookieInit>();
+  const CookieDataStore = new Map<string, CookieListItem>();
   const Subscribers = new Set<Noop>();
 
   const notifySubscribers = () =>
@@ -9,13 +9,9 @@ export const getCookieSubscription = () => {
 
   const initiateCookieStore = () => {
     cookieStore.getAll().then((cookieDataArr) => {
-      // @ts-ignore
-      cookieDataArr.forEach((cookieItem: CookieInit) =>
-        CookieDataStore.set(
-          cookieItem.name ?? "",
-          cookieItem as unknown as CookieInit
-        )
-      );
+      cookieDataArr.forEach((cookieItem) => {
+        cookieItem.name && CookieDataStore.set(cookieItem.name, cookieItem);
+      });
       notifySubscribers();
     });
   };
@@ -25,14 +21,11 @@ export const getCookieSubscription = () => {
 
     const handler = (changeEvent: CookieChangeEvent) => {
       changeEvent.changed.forEach((changedItem) => {
-        CookieDataStore.set(
-          changedItem.name ?? "",
-          changedItem as unknown as CookieInit
-        );
+        changedItem.name && CookieDataStore.set(changedItem.name, changedItem);
       });
 
       changeEvent.deleted.forEach((deletedItem) => {
-        CookieDataStore.delete(deletedItem.name ?? "");
+        deletedItem.name && CookieDataStore.delete(deletedItem.name);
       });
 
       onStoreChange();
@@ -46,7 +39,11 @@ export const getCookieSubscription = () => {
     };
   };
 
-  initiateCookieStore();
+  if (typeof window !== "undefined") {
+    initiateCookieStore();
+    // @ts-ignore - adding cookie-store pollyfill
+    import("cookie-store");
+  }
 
   return {
     getSnapshot: () => CookieDataStore,
