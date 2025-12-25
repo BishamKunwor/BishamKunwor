@@ -19,7 +19,7 @@
   },
   "keywords": [],
   "license": "MIT",
-  "description": "social login for popular social media",
+  "description": "A lightweight TypeScript library for implementing OAuth social login with multiple platforms.",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",

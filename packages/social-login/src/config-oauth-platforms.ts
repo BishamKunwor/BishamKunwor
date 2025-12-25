@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { getHostname } from "./utils";
 import { oauthResponseSubscription } from "./oauth-res-subscription";
 import { generateOauthUrl } from "./generate-oauth-url";
+import { SocialSuccessResponse } from "./socialresponse";
 
 export function configOauthPlatforms<TConfig extends OauthPlatformsConfig>(
   config: TConfig,
@@ -61,45 +62,48 @@ export function configOauthPlatforms<TConfig extends OauthPlatformsConfig>(
       domain: getHostname(),
     });
 
-    return new Promise((resolve, reject) => {
-      if (popupWindowPollInterval) {
-        clearInterval(popupWindowPollInterval);
-      }
-
-      popupWindowPollInterval = setInterval(() => {
-        if (!popupWindow.closed) {
-          return;
+    // @ts-expect-error - SelectedPlatform is not a valid PlatformKeys
+    return new Promise<SocialSuccessResponse<SelectedPlatform>>(
+      (resolve, reject) => {
+        if (popupWindowPollInterval) {
+          clearInterval(popupWindowPollInterval);
         }
 
-        clearInterval(popupWindowPollInterval);
+        popupWindowPollInterval = setInterval(() => {
+          if (!popupWindow.closed) {
+            return;
+          }
 
-        const oauthResponse = Cookies.get(`${String(platform)}Response`);
+          clearInterval(popupWindowPollInterval);
 
-        try {
-          if (!oauthResponse) {
+          const oauthResponse = Cookies.get(`${String(platform)}Response`);
+
+          try {
+            if (!oauthResponse) {
+              return reject({
+                error_description: "Failed to link platform",
+              });
+            }
+
+            const responseDataObj = JSON.parse(oauthResponse);
+
+            if (responseDataObj.error) {
+              return reject(responseDataObj);
+            }
+
+            return resolve(responseDataObj);
+          } catch (error) {
             return reject({
               error_description: "Failed to link platform",
             });
+          } finally {
+            Cookies.remove(`${String(platform)}Response`, {
+              domain: getHostname(),
+            });
           }
-
-          const responseDataObj = JSON.parse(oauthResponse);
-
-          if (responseDataObj.error) {
-            return reject(responseDataObj);
-          }
-
-          return resolve(responseDataObj);
-        } catch (error) {
-          return reject({
-            error_description: "Failed to link platform",
-          });
-        } finally {
-          Cookies.remove(`${String(platform)}Response`, {
-            domain: getHostname(),
-          });
-        }
-      }, 250);
-    });
+        }, 250);
+      }
+    );
   };
 
   return [handleLinkSocial, oauthResponseSubscription] as const;
