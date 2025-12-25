@@ -7,7 +7,6 @@ A lightweight JavaScript/TypeScript utility for subscribing to changes in browse
 - 📦 Subscribe to **localStorage**, **sessionStorage**, or **cookieStorage**
 - 🔄 Automatically update subscribers on `localStorage`, `sessionStorage` and `cookieStore` mutations
 - 🔒 Type-safe with TypeScript support
-- 🔍 Works with modern browsers that support the `cookieStore` API
 - 🌐 Multi-tab change detection for `localStorage` and `sessionStorage`
 
 ---
@@ -29,10 +28,10 @@ yarn add @bisham/dom-storage-sync
 ```ts
 import { getStorageSubscription } from "@bisham/dom-storage-sync";
 
-const localStorage = getStorageSubscription("localStorage");
+const localStorageSub = getStorageSubscription("localStorage");
 
-const unsubscribe = localStorage.subscribe(() => {
-  console.log("Local Storage changed:", localStorage.getSnapshot());
+const unsubscribe = localStorageSub.subscribe(() => {
+  console.log("Local Storage changed:", localStorageSub.getSnapshot());
 });
 
 // Later, if needed
@@ -42,10 +41,10 @@ unsubscribe();
 ```ts
 import { getStorageSubscription } from "@bisham/dom-storage-sync";
 
-const sessionStorage = getStorageSubscription("sessionStorage");
+const sessionStorageSub = getStorageSubscription("sessionStorage");
 
-const unsubscribe = sessionStorage.subscribe(() => {
-  console.log("Session Storage changed:", sessionStorage.getSnapshot());
+const unsubscribe = sessionStorageSub.subscribe(() => {
+  console.log("Session Storage changed:", sessionStorageSub.getSnapshot());
 });
 
 // Later, if needed
@@ -61,10 +60,10 @@ unsubscribe();
 ### 3. Example with Cookies
 
 ```ts
-const cookieStore = getStorageSubscription("cookieStorage");
+const cookieStorageSub = getStorageSubscription("cookieStorage");
 
-const unsubscribe = cookieStore.subscribe(() => {
-  console.log("Cookies updated:", cookieStore.getSnapshot());
+const unsubscribe = cookieStorageSub.subscribe(() => {
+  console.log("Cookies updated:", cookieStorageSub.getSnapshot());
 });
 ```
 
@@ -94,19 +93,10 @@ Returns an object that allows you to **subscribe** to storage changes and **get 
 
 ---
 
-## 🔒 Browser Support
-
-- **localStorage / sessionStorage**: All modern browsers
-- **cookieStorage**: Requires [Cookie Store API](https://developer.mozilla.org/en-US/docs/Web/API/CookieStore), available in Chromium-based browsers (Chrome, Edge)
-
-> 💡 Make sure your app runs in a **secure context (HTTPS)** for cookieStore to work.
-
----
-
 ## ⚠️ Notes
 
 - This utility is intended for **client-side** use only.
-- Will throw an error if called in a server-side or non-browser environment.
+  > 💡 Make sure your app runs in a **secure context (HTTPS)** for cookieStore to work.
 
 ---
 

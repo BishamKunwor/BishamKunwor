@@ -12,6 +12,12 @@ export function getStorageSubscription(
 export function getStorageSubscription(
   storageType: "localStorage" | "sessionStorage" | "cookieStorage"
 ) {
+  if (
+    !["localStorage", "sessionStorage", "cookieStorage"].includes(storageType)
+  ) {
+    throw new Error(`${storageType} is not a valid storage option`);
+  }
+
   if (storageType === "cookieStorage") {
     return getCookieSubscription();
   }
