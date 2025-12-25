@@ -13,7 +13,7 @@ export default defineConfig([
     },
     // plugins: [nodeResolve(), typescript(), terser()],
     plugins: [nodeResolve(), typescript()],
-    external: ["react"],
+    external: ["react", "js-cookie"],
   },
   {
     input: "src/index.ts",

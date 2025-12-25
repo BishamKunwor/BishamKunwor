@@ -24,6 +24,7 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.4",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^24.0.10",
     "@types/react": "^19.2.7",
     "rollup": "^4.44.2",
@@ -33,5 +34,8 @@
   },
   "peerDependencies": {
     "react": ">=18.0.0"
+  },
+  "dependencies": {
+    "js-cookie": "^3.0.5"
   }
 }

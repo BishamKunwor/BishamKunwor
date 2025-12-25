@@ -1,7 +1,7 @@
-import { CreateAuthorizationURLProps } from "./types";
+import type { GenerateOauthUrlProps } from "./types";
 import { generateCodeChallenge } from "./utils";
 
-export function createAuthorizationURL(props: CreateAuthorizationURLProps) {
+export function generateOauthUrl(props: GenerateOauthUrlProps) {
   const {
     authorizationEndpoint,
     state,
@@ -24,6 +24,7 @@ export function createAuthorizationURL(props: CreateAuthorizationURLProps) {
   url.searchParams.set("response_type", responseType || "code");
   const isClientId = "clientId" in props;
 
+  // @ts-expect-error - clientKey is optional
   const primaryClientId = isClientId ? props.clientId : props.clientKey;
 
   if (isClientId) {

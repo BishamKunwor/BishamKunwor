@@ -1,4 +1,6 @@
-export type CreateAuthorizationURLProps = {
+import type { socialMediaConfig } from "./social-media-config";
+
+export type GenerateOauthUrlProps = {
   redirectURI: string;
   authorizationEndpoint: string;
   state: string;
@@ -15,18 +17,14 @@ export type CreateAuthorizationURLProps = {
   responseMode?: string | undefined;
   additionalParams?: Record<string, string> | undefined;
   scopeJoiner?: string | undefined;
-} & ({ clientId: string } | { clientKey: string });
+};
 
-export type UseAuthProps<T extends string> = {
-  onSuccess: (platform: T, data: Record<string, string>) => void;
-  onError: (
-    platform: T,
-    error: {
-      error_description?: string;
-      error?: string;
-      state?: string;
-      error_reason?: string;
-    },
-  ) => void;
-  configs: (CreateAuthorizationURLProps & { platform: T })[];
+export type PlatformKeys = keyof typeof socialMediaConfig;
+type InitializeOauthPlatformGenericConfig = Partial<
+  Omit<GenerateOauthUrlProps, "authorizationEndpoint">
+>;
+
+export type OauthPlatformsConfig = {
+  [Platform in PlatformKeys]?: InitializeOauthPlatformGenericConfig &
+    (Platform extends "tiktok" ? { clientKey: string } : { clientId: string });
 };
