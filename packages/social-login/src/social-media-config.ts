@@ -40,11 +40,18 @@ export const socialMediaConfig = {
     scopes: ["read_user"],
   },
   google: {
-    authorizationEndpoint: "https://accounts.google.com/o/oauth2/auth",
-    scopes: ["email", "profile", "openid"],
+    authorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
+    scopes: [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+    ],
     additionalParams: {
       include_granted_scopes: "true",
     },
+  },
+  instagram: {
+    authorizationEndpoint: "https://instagram.com/oauth/authorize",
+    scopes: ["instagram_business_basic"],
   },
   linkedin: {
     authorizationEndpoint: "https://www.linkedin.com/oauth/v2/authorization",

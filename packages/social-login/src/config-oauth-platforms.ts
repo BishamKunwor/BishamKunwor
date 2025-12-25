@@ -67,34 +67,36 @@ export function configOauthPlatforms<TConfig extends OauthPlatformsConfig>(
       }
 
       popupWindowPollInterval = setInterval(() => {
-        if (popupWindow.closed) {
-          clearInterval(popupWindowPollInterval);
+        if (!popupWindow.closed) {
+          return;
+        }
 
-          const oauthResponse = Cookies.get(`${String(platform)}Response`);
+        clearInterval(popupWindowPollInterval);
 
-          try {
-            if (!oauthResponse) {
-              return reject({
-                error_description: "Failed to link platform",
-              });
-            }
+        const oauthResponse = Cookies.get(`${String(platform)}Response`);
 
-            const responseDataObj = JSON.parse(oauthResponse);
-
-            if (responseDataObj.error) {
-              return reject(responseDataObj);
-            }
-
-            return resolve(responseDataObj);
-          } catch (error) {
+        try {
+          if (!oauthResponse) {
             return reject({
               error_description: "Failed to link platform",
             });
-          } finally {
-            Cookies.remove(`${String(platform)}Response`, {
-              domain: getHostname(),
-            });
           }
+
+          const responseDataObj = JSON.parse(oauthResponse);
+
+          if (responseDataObj.error) {
+            return reject(responseDataObj);
+          }
+
+          return resolve(responseDataObj);
+        } catch (error) {
+          return reject({
+            error_description: "Failed to link platform",
+          });
+        } finally {
+          Cookies.remove(`${String(platform)}Response`, {
+            domain: getHostname(),
+          });
         }
       }, 250);
     });
