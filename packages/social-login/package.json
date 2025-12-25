@@ -1,0 +1,37 @@
+{
+  "name": "@bisham/social-login",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "author": {
+    "name": "Bisham Kunwor",
+    "email": "novelian.nova@gmail.com",
+    "url": "https://bishamkunwor.com.np"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BishamKunwor/BishamKunwor.git",
+    "directory": "packages/social-login"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "description": "social login for popular social media",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@types/node": "^24.0.10",
+    "@types/react": "^19.2.7",
+    "rollup": "^4.44.2",
+    "rollup-plugin-dts": "^6.2.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  }
+}
