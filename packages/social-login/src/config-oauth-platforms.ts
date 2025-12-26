@@ -1,14 +1,14 @@
+import Cookies from "js-cookie";
+import { generateOauthUrl } from "./generate-oauth-url";
+import { oauthResponseSubscription } from "./oauth-res-subscription";
 import { socialMediaConfig } from "./social-media-config";
+import type { SocialSuccessResponse } from "./socialresponse";
 import type {
   GenerateOauthUrlProps,
   OauthPlatformsConfig,
   PlatformKeys,
 } from "./types";
-import Cookies from "js-cookie";
-import { getHostname } from "./utils";
-import { oauthResponseSubscription } from "./oauth-res-subscription";
-import { generateOauthUrl } from "./generate-oauth-url";
-import { SocialSuccessResponse } from "./socialresponse";
+import { getHostname, OauthError } from "./utils";
 
 export function configOauthPlatforms<TConfig extends OauthPlatformsConfig>(
   config: TConfig,
@@ -80,22 +80,23 @@ export function configOauthPlatforms<TConfig extends OauthPlatformsConfig>(
 
           try {
             if (!oauthResponse) {
-              return reject({
-                error_description: "Failed to link platform",
-              });
+              return reject(new Error("Failed to link platform"));
             }
 
             const responseDataObj = JSON.parse(oauthResponse);
 
             if (responseDataObj.error) {
-              return reject(responseDataObj);
+              return reject(
+                new OauthError(
+                  `Error while linking platform: ${String(platform)}`,
+                  responseDataObj
+                )
+              );
             }
 
             return resolve(responseDataObj);
           } catch (error) {
-            return reject({
-              error_description: "Failed to link platform",
-            });
+            return reject(error);
           } finally {
             Cookies.remove(`${String(platform)}Response`, {
               domain: getHostname(),

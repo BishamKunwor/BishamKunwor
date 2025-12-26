@@ -1,212 +1,130 @@
 import { PlatformKeys } from "./types";
 
-/**
- * OAuth 2.0 Standard Error Response
- */
-export type OAuthErrorResponse = {
+type OAuthErrorResponse = {
   error: string;
   error_description?: string;
   error_uri?: string;
   state?: string;
 };
 
-/**
- * OAuth 2.0 Standard Success Response (Authorization Code Flow)
- */
-export type OAuthCodeResponse = {
+type OAuthCodeResponse = {
   code: string;
   state: string;
 };
 
-/**
- * OpenID Connect ID Token Response
- */
-export type OAuthIdTokenResponse = {
-  id_token: string;
-  state?: string;
-};
-
-/**
- * Apple OAuth Response
- * Uses form_post response mode and returns both code and id_token
- */
-export type AppleSuccessResponse = {
+type AppleSuccessResponse = {
   code: string;
   id_token: string;
   state: string;
-  user?: string; // JSON string containing user info
+  user?: string;
 };
 
-export type AppleErrorResponse = OAuthErrorResponse;
+type AppleErrorResponse = OAuthErrorResponse;
 
-/**
- * Google OAuth Response
- */
-export type GoogleSuccessResponse = OAuthCodeResponse & {
+type GoogleSuccessResponse = OAuthCodeResponse & {
   scope?: string;
   authuser?: string;
   prompt?: string;
   hd?: string;
 };
 
-export type GoogleErrorResponse = OAuthErrorResponse;
+type GoogleErrorResponse = OAuthErrorResponse;
 
-/**
- * Facebook OAuth Response
- */
-export type FacebookSuccessResponse = OAuthCodeResponse & {
+type FacebookSuccessResponse = OAuthCodeResponse & {
   granted_scopes?: string;
 };
 
-export type FacebookErrorResponse = OAuthErrorResponse & {
+type FacebookErrorResponse = OAuthErrorResponse & {
   error_reason?: string;
   error_code?: string;
 };
 
-/**
- * GitHub OAuth Response
- */
-export type GitHubSuccessResponse = OAuthCodeResponse;
+type GitHubSuccessResponse = OAuthCodeResponse;
 
-export type GitHubErrorResponse = OAuthErrorResponse;
+type GitHubErrorResponse = OAuthErrorResponse;
 
-/**
- * LinkedIn OAuth Response
- */
-export type LinkedInSuccessResponse = OAuthCodeResponse;
+type LinkedInSuccessResponse = OAuthCodeResponse;
 
-export type LinkedInErrorResponse = OAuthErrorResponse;
+type LinkedInErrorResponse = OAuthErrorResponse;
 
-/**
- * Microsoft OAuth Response
- */
-export type MicrosoftSuccessResponse = OAuthCodeResponse & {
+type MicrosoftSuccessResponse = OAuthCodeResponse & {
   session_state?: string;
 };
 
-export type MicrosoftErrorResponse = OAuthErrorResponse;
+type MicrosoftErrorResponse = OAuthErrorResponse;
 
-/**
- * Twitter/X OAuth Response
- */
-export type TwitterSuccessResponse = OAuthCodeResponse & {
+type TwitterSuccessResponse = OAuthCodeResponse & {
   code_challenge?: string;
   code_challenge_method?: string;
 };
 
-export type TwitterErrorResponse = OAuthErrorResponse;
+type TwitterErrorResponse = OAuthErrorResponse;
 
-/**
- * TikTok OAuth Response
- */
-export type TikTokSuccessResponse = OAuthCodeResponse & {
+type TikTokSuccessResponse = OAuthCodeResponse & {
   code_challenge?: string;
   code_challenge_method?: string;
 };
 
-export type TikTokErrorResponse = OAuthErrorResponse;
+type TikTokErrorResponse = OAuthErrorResponse;
 
-/**
- * Instagram OAuth Response
- */
-export type InstagramSuccessResponse = OAuthCodeResponse;
+type InstagramSuccessResponse = OAuthCodeResponse;
 
-export type InstagramErrorResponse = OAuthErrorResponse;
+type InstagramErrorResponse = OAuthErrorResponse;
 
-/**
- * Discord OAuth Response
- */
-export type DiscordSuccessResponse = OAuthCodeResponse;
+type DiscordSuccessResponse = OAuthCodeResponse;
 
-export type DiscordErrorResponse = OAuthErrorResponse;
+type DiscordErrorResponse = OAuthErrorResponse;
 
-/**
- * Slack OAuth Response (OpenID Connect)
- */
-export type SlackSuccessResponse = OAuthCodeResponse & {
+type SlackSuccessResponse = OAuthCodeResponse & {
   id_token?: string;
 };
 
-export type SlackErrorResponse = OAuthErrorResponse;
+type SlackErrorResponse = OAuthErrorResponse;
 
-/**
- * Spotify OAuth Response
- */
-export type SpotifySuccessResponse = OAuthCodeResponse;
+type SpotifySuccessResponse = OAuthCodeResponse;
 
-export type SpotifyErrorResponse = OAuthErrorResponse;
+type SpotifyErrorResponse = OAuthErrorResponse;
 
-/**
- * Twitch OAuth Response (OpenID Connect)
- */
-export type TwitchSuccessResponse = OAuthCodeResponse & {
+type TwitchSuccessResponse = OAuthCodeResponse & {
   id_token?: string;
   scope?: string;
 };
 
-export type TwitchErrorResponse = OAuthErrorResponse;
+type TwitchErrorResponse = OAuthErrorResponse;
 
-/**
- * Reddit OAuth Response
- */
-export type RedditSuccessResponse = OAuthCodeResponse;
+type RedditSuccessResponse = OAuthCodeResponse;
 
-export type RedditErrorResponse = OAuthErrorResponse;
+type RedditErrorResponse = OAuthErrorResponse;
 
-/**
- * Atlassian OAuth Response
- */
-export type AtlassianSuccessResponse = OAuthCodeResponse;
+type AtlassianSuccessResponse = OAuthCodeResponse;
 
-export type AtlassianErrorResponse = OAuthErrorResponse;
+type AtlassianErrorResponse = OAuthErrorResponse;
 
-/**
- * Dropbox OAuth Response
- */
-export type DropboxSuccessResponse = OAuthCodeResponse;
+type DropboxSuccessResponse = OAuthCodeResponse;
 
-export type DropboxErrorResponse = OAuthErrorResponse;
+type DropboxErrorResponse = OAuthErrorResponse;
 
-/**
- * Figma OAuth Response
- */
-export type FigmaSuccessResponse = OAuthCodeResponse;
+type FigmaSuccessResponse = OAuthCodeResponse;
 
-export type FigmaErrorResponse = OAuthErrorResponse;
+type FigmaErrorResponse = OAuthErrorResponse;
 
-/**
- * GitLab OAuth Response
- */
-export type GitLabSuccessResponse = OAuthCodeResponse;
+type GitLabSuccessResponse = OAuthCodeResponse;
 
-export type GitLabErrorResponse = OAuthErrorResponse;
+type GitLabErrorResponse = OAuthErrorResponse;
 
-/**
- * Notion OAuth Response
- */
-export type NotionSuccessResponse = OAuthCodeResponse;
+type NotionSuccessResponse = OAuthCodeResponse;
 
-export type NotionErrorResponse = OAuthErrorResponse;
+type NotionErrorResponse = OAuthErrorResponse;
 
-/**
- * PayPal OAuth Response
- */
-export type PayPalSuccessResponse = OAuthCodeResponse;
+type PayPalSuccessResponse = OAuthCodeResponse;
 
-export type PayPalErrorResponse = OAuthErrorResponse;
+type PayPalErrorResponse = OAuthErrorResponse;
 
-/**
- * Zoom OAuth Response
- */
-export type ZoomSuccessResponse = OAuthCodeResponse;
+type ZoomSuccessResponse = OAuthCodeResponse;
 
-export type ZoomErrorResponse = OAuthErrorResponse;
+type ZoomErrorResponse = OAuthErrorResponse;
 
-/**
- * Social Media OAuth Response Mapping
- * Maps each platform to its success and error response types
- */
-export type SocialResponse = {
+type SocialResponse = {
   apple: {
     success: AppleSuccessResponse;
     error: AppleErrorResponse;
@@ -293,14 +211,8 @@ export type SocialResponse = {
   };
 };
 
-/**
- * Type helper to extract success response type for a platform
- */
 export type SocialSuccessResponse<T extends PlatformKeys> =
   SocialResponse[T]["success"];
 
-/**
- * Type helper to extract error response type for a platform
- */
 export type SocialErrorResponse<T extends PlatformKeys> =
   SocialResponse[T]["error"];
