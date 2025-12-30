@@ -13,6 +13,8 @@ export function getHostname() {
     : hostname;
 }
 
+export const generateState = () => Math.random().toString(36).substring(2, 15);
+
 export class OauthError<Platform extends SocialPlatforms> extends Error {
   errorResponse: SocialErrorResponse<Platform>;
 

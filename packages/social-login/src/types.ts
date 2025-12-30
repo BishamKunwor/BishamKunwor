@@ -28,11 +28,30 @@ type SocialPlatformsSchema = {
   };
 
   google: {
-    success: {};
-    error: {};
+    success:
+      | ({ flow: "auth-code" } & google.accounts.oauth2.CodeResponse)
+      | ({ flow: "implicit" } & google.accounts.oauth2.TokenResponse)
+      | ({ flow: "one-tap" } & google.accounts.id.CredentialResponse);
+    error:
+      | google.accounts.oauth2.ClientConfigError
+      | ({ flow: "auth-code" } & google.accounts.oauth2.CodeResponse)
+      | ({ flow: "implicit" } & google.accounts.oauth2.TokenResponse);
+
     config:
-      | ({ flow: "auth-code" } & google.accounts.oauth2.CodeClientConfig)
-      | ({ flow: "implicit" } & google.accounts.oauth2.TokenClientConfig);
+      | ({ flow: "auth-code" } & Omit<
+          google.accounts.oauth2.CodeClientConfig,
+          "callback" | "error_callback"
+        >)
+      | ({ flow: "implicit" } & Omit<
+          google.accounts.oauth2.TokenClientConfig,
+          "callback" | "error_callback"
+        >)
+      | ({
+          flow: "one-tap";
+        } & Omit<
+          google.accounts.id.IdConfiguration,
+          "callback" | "native_callback" | "intermediate_iframe_close_callback"
+        >);
   };
 };
 
