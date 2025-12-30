@@ -1,5 +1,4 @@
-import type { SocialErrorResponse } from "./socialresponse";
-import type { PlatformKeys } from "./types";
+import type { SocialErrorResponse, SocialPlatforms } from "./types";
 
 export function generateCodeChallenge(codeVerifier: string) {
   const utf8 = new TextEncoder().encode(codeVerifier);
@@ -14,7 +13,7 @@ export function getHostname() {
     : hostname;
 }
 
-export class OauthError<Platform extends PlatformKeys> extends Error {
+export class OauthError<Platform extends SocialPlatforms> extends Error {
   errorResponse: SocialErrorResponse<Platform>;
 
   constructor(message: string, errorObj: unknown) {
@@ -24,7 +23,7 @@ export class OauthError<Platform extends PlatformKeys> extends Error {
   }
 }
 
-export const isOauthError = <Platform extends PlatformKeys>(
+export const isOauthError = <Platform extends SocialPlatforms>(
   error: unknown,
   platform: Platform
 ): error is OauthError<Platform> => error instanceof OauthError;
