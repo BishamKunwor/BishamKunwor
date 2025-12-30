@@ -1,9 +1,11 @@
+import { initiateOauthViaUrl } from "./initiate-oauth-via-url";
 import {
   appleOauth,
   googleAuthCodeOauth,
   googleAuthTokenOauth,
   googleOneTapOauth,
 } from "./platform-specific-oauth";
+import { socialMediaConfig } from "./social-platform-configs";
 import type {
   ConfigOauthPlatformsProps,
   SocialPlatforms,
@@ -17,6 +19,8 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
     redirectURI?: string;
   }
 ) {
+  const oauthInit = initiateOauthViaUrl(config, globalConfig);
+
   function connectSocialPlatform<SelectedPlatform extends keyof TConfig>(
     platform: SelectedPlatform
   ): SelectedPlatform extends SocialPlatforms
@@ -33,6 +37,7 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
       const _config = config[_platform] ?? {};
       return appleOauth({
         ..._config,
+        scope: _config.scope ?? socialMediaConfig.apple.scopes.join(" "),
         redirectURI: _config?.redirectURI || globalConfig?.redirectURI,
         state: _config?.state ?? generateState(),
         usePopup: true,
@@ -44,6 +49,7 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
 
       return googleAuthTokenOauth({
         ..._config,
+        scope: _config.scope ?? socialMediaConfig.google.scopes.join(" "),
         state: _config?.state ?? generateState(),
       });
     }
@@ -52,6 +58,7 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
       const _config = config[_platform];
       return googleAuthCodeOauth({
         ..._config,
+        scope: _config.scope ?? socialMediaConfig.google.scopes.join(" "),
         redirect_uri: _config?.redirect_uri ?? globalConfig?.redirectURI,
         state: _config?.state ?? generateState(),
       });
@@ -66,6 +73,8 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
 
       return googleOneTapOauth(_config);
     }
+
+    oauthInit(_platform);
 
     throw new Error(`Platform ${_platform} is not supported`);
   }
