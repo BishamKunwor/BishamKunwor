@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import { generateOauthUrl } from "./generate-oauth-url";
 import { oauthResponseSubscription } from "./oauth-res-subscription";
+import { appleOauth } from "./platform-specific-oauth";
 import { socialMediaConfig } from "./social-media-config";
 import type { SocialSuccessResponse } from "./socialresponse";
 import type {
@@ -18,7 +19,7 @@ export function configOauthPlatforms<TConfig extends OauthPlatformsConfig>(
 ) {
   let popupWindowPollInterval: ReturnType<typeof setInterval>;
 
-  const getPlatformOauthUrl = (platform: keyof TConfig) => {
+  const getSocialPlatformConfig = (platform: keyof TConfig) => {
     const defaultSocialPlatformConfig =
       socialMediaConfig[platform as PlatformKeys];
 
@@ -33,13 +34,31 @@ export function configOauthPlatforms<TConfig extends OauthPlatformsConfig>(
       ...config[platform],
     };
 
+    return socialPlatformConfig;
+  };
+
+  const getPlatformOauthUrl = (platform: keyof TConfig) => {
+    const socialPlatformConfig = getSocialPlatformConfig(platform);
     return generateOauthUrl(socialPlatformConfig);
   };
 
-  const handleLinkSocial = <SelectedPlatform extends keyof TConfig>(
+  const handleLinkSocial = async <SelectedPlatform extends keyof TConfig>(
     platform: SelectedPlatform
   ) => {
     const oauthUrl = getPlatformOauthUrl(platform);
+
+    if (platform === "apple") {
+      const socialPlatformConfig = getSocialPlatformConfig(platform);
+
+      return appleOauth({
+        // @ts-expect-error - clientId is not a valid property of GenerateOauthUrlProps
+        clientId: socialPlatformConfig.clientId,
+        redirectURI: socialPlatformConfig.redirectURI,
+        scope: socialPlatformConfig.scopes?.join(" "),
+        usePopup: true,
+        state: socialPlatformConfig.state,
+      });
+    }
 
     const width = 450;
     const height = 730;
