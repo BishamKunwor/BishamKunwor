@@ -1,5 +1,12 @@
-import { appleOauth, googleOauth } from "./platform-specific-oauth";
-import type { ConfigOauthPlatformsProps, SocialPlatforms } from "./types";
+import {
+  appleOauth,
+  googleOauth,
+  googleOneTapOauth,
+} from "./platform-specific-oauth";
+import type {
+  ConfigOauthPlatformsProps,
+  SocialPlatforms
+} from "./types";
 import { generateState } from "./utils";
 
 export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
@@ -8,10 +15,14 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
     redirectURI?: string;
   }
 ) {
-  const connectSocialPlatform = async <SelectedPlatform extends keyof TConfig>(
+  function connectSocialPlatform<SelectedPlatform extends keyof TConfig>(
     platform: SelectedPlatform
-  ) => {
+  ) {
     const _platform = platform as SocialPlatforms;
+
+    if (config[_platform] === undefined) {
+      throw new Error(`Config for platform ${_platform} is not defined`);
+    }
 
     if (_platform === "apple") {
       const _config = config[_platform] ?? {};
@@ -43,16 +54,18 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
       });
     }
 
-    if (_platform === "google" && config[_platform]?.flow == "one-tap") {
+    if (_platform === "googleOneTap") {
       const _config = config[_platform];
-      return googleOauth({
-        ..._config,
-        flow: _config?.flow ?? "one-tap",
-      });
+
+      if (typeof _config?.client_id !== "string") {
+        throw new Error("clientId is required for google one tap");
+      }
+
+      return googleOneTapOauth(_config);
     }
 
     throw new Error(`Platform ${_platform} is not supported`);
-  };
+  }
 
   return { connectSocialPlatform };
 }

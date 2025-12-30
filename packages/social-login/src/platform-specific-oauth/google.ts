@@ -15,15 +15,9 @@ const isImplicitConfig = (
   return config.flow === "implicit";
 };
 
-const isOneTapConfig = (
-  config: SocialPlatformConfig<"google">
-): config is SocialPlatformConfig<"google"> & { flow: "one-tap" } => {
-  return config.flow === "one-tap";
-};
-
-export async function googleOauth<
-  Flow extends "auth-code" | "implicit" | "one-tap"
->(config: SocialPlatformConfig<"google"> & { flow: Flow }) {
+export async function googleOauth<Flow extends "auth-code" | "implicit">(
+  config: SocialPlatformConfig<"google"> & { flow: Flow }
+) {
   await loadScript(GOOGLE_SDK_URL);
 
   if (!window.google) {
@@ -32,13 +26,10 @@ export async function googleOauth<
 
   const initTokenClient = window?.google?.accounts?.oauth2.initTokenClient;
   const initCodeClient = window?.google?.accounts?.oauth2.initCodeClient;
-  const initIdClient = window?.google?.accounts?.id.initialize;
 
   type SuccessResponse = Flow extends "auth-code"
     ? google.accounts.oauth2.CodeResponse
-    : Flow extends "implicit"
-    ? google.accounts.oauth2.TokenResponse
-    : google.accounts.id.CredentialResponse;
+    : google.accounts.oauth2.TokenResponse;
 
   return new Promise<SuccessResponse>((resolve, reject) => {
     if (isAuthCodeConfig(config)) {
@@ -73,20 +64,6 @@ export async function googleOauth<
           reject(new OauthError<"google">("Error signing in with google", err));
         },
       }).requestAccessToken();
-    }
-
-    if (isOneTapConfig(config)) {
-      initIdClient({
-        ...config,
-        callback: (res) => resolve(res as SuccessResponse),
-        intermediate_iframe_close_callback: () =>
-          reject(new Error("Error signing in with google")),
-        native_callback: (res) => {
-          resolve(res as SuccessResponse);
-        },
-      });
-
-      window?.google?.accounts?.id.prompt();
     }
   });
 }

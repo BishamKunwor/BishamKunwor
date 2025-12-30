@@ -30,8 +30,7 @@ type SocialPlatformsSchema = {
   google: {
     success:
       | ({ flow: "auth-code" } & google.accounts.oauth2.CodeResponse)
-      | ({ flow: "implicit" } & google.accounts.oauth2.TokenResponse)
-      | ({ flow: "one-tap" } & google.accounts.id.CredentialResponse);
+      | ({ flow: "implicit" } & google.accounts.oauth2.TokenResponse);
     error:
       | google.accounts.oauth2.ClientConfigError
       | ({ flow: "auth-code" } & google.accounts.oauth2.CodeResponse)
@@ -45,13 +44,16 @@ type SocialPlatformsSchema = {
       | ({ flow: "implicit" } & Omit<
           google.accounts.oauth2.TokenClientConfig,
           "callback" | "error_callback"
-        >)
-      | ({
-          flow: "one-tap";
-        } & Omit<
-          google.accounts.id.IdConfiguration,
-          "callback" | "native_callback" | "intermediate_iframe_close_callback"
         >);
+  };
+
+  googleOneTap: {
+    success: google.accounts.id.CredentialResponse;
+    error: Error;
+    config: Omit<
+      google.accounts.id.IdConfiguration,
+      "callback" | "native_callback" | "intermediate_iframe_close_callback"
+    >;
   };
 };
 
