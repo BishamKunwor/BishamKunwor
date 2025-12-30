@@ -1,3 +1,4 @@
 export * from "./apple";
-export * from "./google";
+export * from "./googleAuthToken";
+export * from "./googleAuthCode";
 export * from "./googleOneTap";

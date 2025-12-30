@@ -27,24 +27,26 @@ type SocialPlatformsSchema = {
     config: AppleSignInAPI.ClientConfigI;
   };
 
-  google: {
-    success:
-      | ({ flow: "auth-code" } & google.accounts.oauth2.CodeResponse)
-      | ({ flow: "implicit" } & google.accounts.oauth2.TokenResponse);
+  googleAuthCode: {
+    success: google.accounts.oauth2.CodeResponse;
     error:
       | google.accounts.oauth2.ClientConfigError
-      | ({ flow: "auth-code" } & google.accounts.oauth2.CodeResponse)
-      | ({ flow: "implicit" } & google.accounts.oauth2.TokenResponse);
+      | google.accounts.oauth2.CodeResponse;
+    config: Omit<
+      google.accounts.oauth2.CodeClientConfig,
+      "callback" | "error_callback"
+    >;
+  };
 
-    config:
-      | ({ flow: "auth-code" } & Omit<
-          google.accounts.oauth2.CodeClientConfig,
-          "callback" | "error_callback"
-        >)
-      | ({ flow: "implicit" } & Omit<
-          google.accounts.oauth2.TokenClientConfig,
-          "callback" | "error_callback"
-        >);
+  googleAuthToken: {
+    success: google.accounts.oauth2.TokenResponse;
+    error:
+      | google.accounts.oauth2.ClientConfigError
+      | google.accounts.oauth2.TokenResponse;
+    config: Omit<
+      google.accounts.oauth2.TokenClientConfig,
+      "callback" | "error_callback"
+    >;
   };
 
   googleOneTap: {

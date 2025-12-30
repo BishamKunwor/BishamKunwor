@@ -1,11 +1,13 @@
 import {
   appleOauth,
-  googleOauth,
+  googleAuthCodeOauth,
+  googleAuthTokenOauth,
   googleOneTapOauth,
 } from "./platform-specific-oauth";
 import type {
   ConfigOauthPlatformsProps,
-  SocialPlatforms
+  SocialPlatforms,
+  SocialSuccessResponse,
 } from "./types";
 import { generateState } from "./utils";
 
@@ -17,7 +19,10 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
 ) {
   function connectSocialPlatform<SelectedPlatform extends keyof TConfig>(
     platform: SelectedPlatform
-  ) {
+  ): SelectedPlatform extends SocialPlatforms
+    ? Promise<SocialSuccessResponse<SelectedPlatform>>
+    : never;
+  function connectSocialPlatform(platform: SocialPlatforms) {
     const _platform = platform as SocialPlatforms;
 
     if (config[_platform] === undefined) {
@@ -34,21 +39,19 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
       });
     }
 
-    if (_platform === "google" && config[_platform]?.flow == "implicit") {
+    if (_platform === "googleAuthToken") {
       const _config = config[_platform];
 
-      return googleOauth({
+      return googleAuthTokenOauth({
         ..._config,
-        flow: _config?.flow ?? "implicit",
         state: _config?.state ?? generateState(),
       });
     }
 
-    if (_platform === "google" && config[_platform]?.flow == "auth-code") {
+    if (_platform === "googleAuthCode") {
       const _config = config[_platform];
-      return googleOauth({
+      return googleAuthCodeOauth({
         ..._config,
-        flow: _config?.flow ?? "auth-code",
         redirect_uri: _config?.redirect_uri ?? globalConfig?.redirectURI,
         state: _config?.state ?? generateState(),
       });
