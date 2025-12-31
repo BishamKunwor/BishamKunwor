@@ -482,7 +482,7 @@ type SocialPlatformsSchema = {
   };
 };
 
-type SocialPlatforms = keyof SocialPlatformsSchema;
+export type SocialPlatforms = keyof SocialPlatformsSchema;
 
 export type SocialSuccessResponse<Platform extends SocialPlatforms> =
   SocialPlatformsSchema[Platform]["success"];

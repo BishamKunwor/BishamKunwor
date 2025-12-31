@@ -1,12 +1,11 @@
+import { SDK_SCRIPTS } from "../constants";
 import type { SocialPlatformConfig, SocialSuccessResponse } from "../types";
 import { loadScript } from "../utils";
-
-const GOOGLE_SDK_URL = "https://accounts.google.com/gsi/client";
 
 export async function googleOneTapOauth(
   config: SocialPlatformConfig<"googleOneTap">
 ) {
-  await loadScript(GOOGLE_SDK_URL);
+  await loadScript(SDK_SCRIPTS.GOOGLE);
 
   if (!window.google) {
     return Promise.reject(new Error("Error loading google sdk"));

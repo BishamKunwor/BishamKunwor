@@ -1,12 +1,11 @@
+import { SDK_SCRIPTS } from "../constants";
 import type { SocialPlatformConfig, SocialSuccessResponse } from "../types";
 import { loadScript, OauthError } from "../utils";
-
-const GOOGLE_SDK_URL = "https://accounts.google.com/gsi/client";
 
 export async function googleAuthTokenOauth(
   config: SocialPlatformConfig<"googleAuthToken">
 ) {
-  await loadScript(GOOGLE_SDK_URL);
+  await loadScript(SDK_SCRIPTS.GOOGLE);
 
   if (!window.google) {
     return Promise.reject(new Error("Error loading google sdk"));

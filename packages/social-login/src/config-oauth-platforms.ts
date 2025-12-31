@@ -5,7 +5,7 @@ import {
   googleAuthTokenOauth,
   googleOneTapOauth,
 } from "./platform-specific-oauth";
-import { socialMediaConfig } from "./social-platform-configs";
+import { socialMediaConfig } from "./constants";
 import type {
   ConfigOauthPlatformsProps,
   SocialPlatforms,

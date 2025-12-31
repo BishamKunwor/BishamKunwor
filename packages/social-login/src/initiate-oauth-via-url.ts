@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { generateOauthUrl } from "./generate-oauth-url";
-import { socialMediaConfig } from "./social-platform-configs";
+import { socialMediaConfig } from "./constants";
 import type { ConfigOauthPlatformsProps, GenerateOauthUrlProps } from "./types";
 import { getHostname, OauthError } from "./utils";
 
