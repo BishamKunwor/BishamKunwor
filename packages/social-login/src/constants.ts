@@ -1,6 +1,8 @@
 import type { GenerateOauthUrlProps, SocialPlatforms } from "./types";
 
-export const socialMediaConfig = {
+export const socialMediaConfig: Partial<
+  Record<SocialPlatforms | "google", Partial<GenerateOauthUrlProps>>
+> = {
   apple: {
     authorizationEndpoint: "https://appleid.apple.com/auth/authorize",
     scopes: ["email", "name"],
@@ -104,7 +106,7 @@ export const socialMediaConfig = {
     authorizationEndpoint: "https://zoom.us/oauth/authorize",
     responseType: "code",
   },
-} satisfies Record<string, Partial<GenerateOauthUrlProps>>;
+};
 
 export const SDK_SCRIPTS = {
   APPLE:

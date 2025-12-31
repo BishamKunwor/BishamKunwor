@@ -1,17 +1,10 @@
-import { initiateOauthViaUrl } from "./initiate-oauth-via-url";
-import {
-  appleOauth,
-  googleAuthCodeOauth,
-  googleAuthTokenOauth,
-  googleOneTapOauth,
-} from "./platform-specific-oauth";
-import { socialMediaConfig } from "./constants";
+import { oauthByUrl } from "./oauth-by-url";
+import { oauthBySdk } from "./oauth-via-sdk";
 import type {
   ConfigOauthPlatformsProps,
   SocialPlatforms,
   SocialSuccessResponse,
 } from "./types";
-import { generateState } from "./utils";
 
 export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
   config: TConfig,
@@ -19,64 +12,28 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
     redirectURI?: string;
   }
 ) {
-  const oauthInit = initiateOauthViaUrl(config, globalConfig);
-
   function connectSocialPlatform<SelectedPlatform extends keyof TConfig>(
     platform: SelectedPlatform
   ): SelectedPlatform extends SocialPlatforms
     ? Promise<SocialSuccessResponse<SelectedPlatform>>
     : never;
   function connectSocialPlatform(platform: SocialPlatforms) {
-    const _platform = platform as SocialPlatforms;
-
-    if (config[_platform] === undefined) {
-      throw new Error(`Config for platform ${_platform} is not defined`);
+    if (config[platform] === undefined) {
+      throw new Error(`Config for platform ${platform} is not defined`);
     }
 
-    if (_platform === "apple") {
-      const _config = config[_platform] ?? {};
-      return appleOauth({
-        ..._config,
-        scope: _config.scope ?? socialMediaConfig.apple.scopes.join(" "),
-        redirectURI: _config?.redirectURI || globalConfig?.redirectURI,
-        state: _config?.state ?? generateState(),
-        usePopup: _config.usePopup ?? true,
-      });
+    const sdkPlatforms: SocialPlatforms[] = [
+      "apple",
+      "googleAuthCode",
+      "googleAuthToken",
+      "googleOneTap",
+    ];
+
+    if (sdkPlatforms.includes(platform)) {
+      return oauthBySdk(platform, config as any, globalConfig);
     }
 
-    if (_platform === "googleAuthToken") {
-      const _config = config[_platform];
-
-      return googleAuthTokenOauth({
-        ..._config,
-        scope: _config.scope ?? socialMediaConfig.google.scopes.join(" "),
-        state: _config?.state ?? generateState(),
-      });
-    }
-
-    if (_platform === "googleAuthCode") {
-      const _config = config[_platform];
-      return googleAuthCodeOauth({
-        ..._config,
-        scope: _config.scope ?? socialMediaConfig.google.scopes.join(" "),
-        redirect_uri: _config?.redirect_uri ?? globalConfig?.redirectURI,
-        state: _config?.state ?? generateState(),
-      });
-    }
-
-    if (_platform === "googleOneTap") {
-      const _config = config[_platform];
-
-      if (typeof _config?.client_id !== "string") {
-        throw new Error("clientId is required for google one tap");
-      }
-
-      return googleOneTapOauth(_config);
-    }
-
-    oauthInit(_platform);
-
-    throw new Error(`Platform ${_platform} is not supported`);
+    return oauthByUrl(platform, config as any, globalConfig);
   }
 
   return { connectSocialPlatform };
