@@ -45,8 +45,10 @@ type SocialPlatformsSchema = {
       | google.accounts.oauth2.CodeResponse;
     config: Omit<
       google.accounts.oauth2.CodeClientConfig,
-      "callback" | "error_callback"
-    >;
+      "callback" | "error_callback" | "scope"
+    > & {
+      scope?: string;
+    };
   };
 
   googleAuthToken: {
@@ -56,8 +58,10 @@ type SocialPlatformsSchema = {
       | google.accounts.oauth2.TokenResponse;
     config: Omit<
       google.accounts.oauth2.TokenClientConfig,
-      "callback" | "error_callback"
-    >;
+      "callback" | "error_callback" | "scope"
+    > & {
+      scope?: string;
+    };
   };
 
   googleOneTap: {
@@ -397,17 +401,12 @@ type SocialPlatformsSchema = {
     error: {
       error: string;
       error_description?: string;
-      error_uri?: string;
+      error_code?: string;
+      scopes?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
-      | "clientKey"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "scopeJoiner"
-      | "additionalParams",
+      "clientKey" | "redirectURI" | "state" | "scopes" | "additionalParams",
       "clientKey"
     >;
   };
