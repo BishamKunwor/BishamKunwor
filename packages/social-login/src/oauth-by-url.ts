@@ -56,7 +56,7 @@ export function oauthByUrl<TConfig extends Required<ConfigOauthPlatformsProps>>(
         clearInterval(popupWindowPollInterval);
       }
 
-      popupWindowPollInterval = setInterval(() => {
+      const handlePopupWindowClose = () => {
         if (!popupWindow.closed) {
           return;
         }
@@ -89,7 +89,9 @@ export function oauthByUrl<TConfig extends Required<ConfigOauthPlatformsProps>>(
             domain: getHostname(),
           });
         }
-      }, 250);
+      };
+
+      popupWindowPollInterval = setInterval(handlePopupWindowClose, 250);
     }
   );
 }
