@@ -30,10 +30,18 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
     ];
 
     if (sdkPlatforms.includes(platform)) {
-      return oauthBySdk(platform, config as any, globalConfig);
+      return oauthBySdk(
+        platform,
+        config as Required<ConfigOauthPlatformsProps>,
+        globalConfig
+      );
     }
 
-    return oauthByUrl(platform, config as any, globalConfig);
+    return oauthByUrl(
+      platform,
+      config as Required<ConfigOauthPlatformsProps>,
+      globalConfig
+    );
   }
 
   return { connectSocialPlatform };

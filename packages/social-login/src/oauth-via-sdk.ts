@@ -56,8 +56,6 @@ export function oauthBySdk<TConfig extends Required<ConfigOauthPlatformsProps>>(
   }
 
   if (platform === "googleOneTap") {
-    const platformConfig = config[platform];
-
-    return googleOneTapOauth(platformConfig);
+    return googleOneTapOauth(config[platform]);
   }
 }
