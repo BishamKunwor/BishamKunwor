@@ -22,6 +22,15 @@ export type GenerateOauthUrlProps = {
   scopeJoiner?: string | undefined;
 };
 
+type WithRequiredOauthProps<
+  OauthProps extends keyof GenerateOauthUrlProps,
+  RequiredKeys extends OauthProps
+> = {
+  [K in OauthProps as K extends "clientId"
+    ? never
+    : K]?: GenerateOauthUrlProps[K];
+} & Required<Pick<GenerateOauthUrlProps, RequiredKeys>>;
+
 type SocialPlatformsSchema = {
   apple: {
     success: AppleSignInAPI.SignInResponseI;
@@ -72,14 +81,14 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
+    config: WithRequiredOauthProps<
       | "clientId"
       | "redirectURI"
       | "state"
       | "scopes"
       | "responseType"
-      | "additionalParams"
+      | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -94,14 +103,15 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
+    config: WithRequiredOauthProps<
       | "clientId"
       | "redirectURI"
       | "state"
       | "scopes"
       | "responseType"
       | "scopeJoiner"
+      | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -116,13 +126,9 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -137,13 +143,9 @@ type SocialPlatformsSchema = {
       error_reason?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -158,13 +160,9 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -179,12 +177,9 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -199,13 +194,9 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -220,13 +211,9 @@ type SocialPlatformsSchema = {
       error_reason?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -238,16 +225,11 @@ type SocialPlatformsSchema = {
     error: {
       error: string;
       error_description?: string;
-      error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -264,14 +246,15 @@ type SocialPlatformsSchema = {
       state?: string;
       admin_consent_required?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
+    config: WithRequiredOauthProps<
       | "clientId"
       | "redirectURI"
       | "state"
       | "scopes"
       | "responseType"
       | "prompt"
+      | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -286,14 +269,14 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
+    config: WithRequiredOauthProps<
       | "clientId"
       | "redirectURI"
       | "state"
       | "scopes"
       | "responseType"
-      | "additionalParams"
+      | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -308,13 +291,9 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -329,14 +308,15 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
+    config: WithRequiredOauthProps<
       | "clientId"
       | "redirectURI"
       | "state"
       | "scopes"
       | "responseType"
       | "duration"
+      | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -351,12 +331,9 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -371,13 +348,9 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -393,14 +366,15 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
+    config: WithRequiredOauthProps<
       | "clientKey"
       | "redirectURI"
       | "state"
       | "scopes"
       | "responseType"
       | "scopeJoiner"
+      | "additionalParams",
+      "clientKey"
     >;
   };
 
@@ -416,14 +390,15 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
+    config: WithRequiredOauthProps<
       | "clientId"
       | "redirectURI"
       | "state"
       | "scopes"
       | "responseType"
       | "claims"
+      | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -438,14 +413,15 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
+    config: WithRequiredOauthProps<
       | "clientId"
       | "redirectURI"
       | "state"
       | "scopes"
       | "responseType"
       | "codeVerifier"
+      | "additionalParams",
+      "clientId"
     >;
   };
 
@@ -460,13 +436,9 @@ type SocialPlatformsSchema = {
       error_uri?: string;
       state?: string;
     };
-    config: Pick<
-      GenerateOauthUrlProps,
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
+    config: WithRequiredOauthProps<
+      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      "clientId"
     >;
   };
 };

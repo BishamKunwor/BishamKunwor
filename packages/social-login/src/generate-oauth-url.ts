@@ -22,15 +22,13 @@ export function generateOauthUrl(props: GenerateOauthUrlProps) {
   } = props;
   const url = new URL(authorizationEndpoint);
   url.searchParams.set("response_type", responseType || "code");
-  const isClientId = "clientId" in props;
 
-  // @ts-expect-error - clientKey is optional
-  const primaryClientId = isClientId ? props.clientId : props.clientKey;
+  if (props.clientId) {
+    url.searchParams.set("client_id", props.clientId);
+  }
 
-  if (isClientId) {
-    url.searchParams.set("client_id", primaryClientId);
-  } else {
-    url.searchParams.set("client_key", primaryClientId);
+  if (props.clientKey) {
+    url.searchParams.set("client_key", props.clientKey);
   }
   url.searchParams.set("state", state);
   if (scopes) {
