@@ -40,7 +40,7 @@ export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
         scope: _config.scope ?? socialMediaConfig.apple.scopes.join(" "),
         redirectURI: _config?.redirectURI || globalConfig?.redirectURI,
         state: _config?.state ?? generateState(),
-        usePopup: true,
+        usePopup: _config.usePopup ?? true,
       });
     }
 

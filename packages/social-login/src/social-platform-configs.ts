@@ -87,7 +87,7 @@ export const socialMediaConfig = {
   },
   tiktok: {
     authorizationEndpoint: "https://www.tiktok.com/v2/auth/authorize",
-    scopes: ["user.info.profile"],
+    scopes: ["user.info.basic"],
     scopeJoiner: ",",
     responseType: "code",
   },
