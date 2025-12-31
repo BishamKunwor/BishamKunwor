@@ -4,7 +4,7 @@ import {
   googleAuthCodeOauth,
   googleAuthTokenOauth,
   googleOneTapOauth,
-} from "./platform-specific-oauth";
+} from "./sdk-adapters";
 import type { ConfigOauthPlatformsProps, SocialPlatforms } from "./types";
 import { generateState } from "./utils";
 
