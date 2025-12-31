@@ -69,7 +69,6 @@ type SocialPlatformsSchema = {
     >;
   };
 
-  // Standard OAuth 2.0 Authorization Code Flow Platforms
   atlassian: {
     success: {
       code: string;
@@ -127,7 +126,12 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      | "clientId"
+      | "redirectURI"
+      | "state"
+      | "scopes"
+      | "responseType"
+      | "additionalParams",
       "clientId"
     >;
   };
@@ -144,7 +148,12 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      | "clientId"
+      | "redirectURI"
+      | "state"
+      | "scopes"
+      | "responseType"
+      | "additionalParams",
       "clientId"
     >;
   };
@@ -161,7 +170,12 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      | "clientId"
+      | "redirectURI"
+      | "state"
+      | "scopes"
+      | "responseType"
+      | "additionalParams",
       "clientId"
     >;
   };
@@ -195,7 +209,12 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      | "clientId"
+      | "redirectURI"
+      | "state"
+      | "scopes"
+      | "responseType"
+      | "additionalParams",
       "clientId"
     >;
   };
@@ -212,7 +231,12 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      | "clientId"
+      | "redirectURI"
+      | "state"
+      | "scopes"
+      | "responseType"
+      | "additionalParams",
       "clientId"
     >;
   };
@@ -292,7 +316,12 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      | "clientId"
+      | "redirectURI"
+      | "state"
+      | "scopes"
+      | "responseType"
+      | "additionalParams",
       "clientId"
     >;
   };
@@ -349,7 +378,12 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      | "clientId"
+      | "redirectURI"
+      | "state"
+      | "scopes"
+      | "responseType"
+      | "additionalParams",
       "clientId"
     >;
   };
@@ -437,24 +471,28 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      "clientId" | "redirectURI" | "state" | "scopes" | "responseType" | "additionalParams",
+      | "clientId"
+      | "redirectURI"
+      | "state"
+      | "scopes"
+      | "responseType"
+      | "additionalParams",
       "clientId"
     >;
   };
 };
 
-type Platforms = keyof SocialPlatformsSchema;
+type SocialPlatforms = keyof SocialPlatformsSchema;
 
-export type SocialSuccessResponse<Platform extends Platforms> =
+export type SocialSuccessResponse<Platform extends SocialPlatforms> =
   SocialPlatformsSchema[Platform]["success"];
 
-export type SocialErrorResponse<Platform extends Platforms> =
+export type SocialErrorResponse<Platform extends SocialPlatforms> =
   SocialPlatformsSchema[Platform]["error"];
 
-export type SocialPlatformConfig<Platform extends Platforms> =
+export type SocialPlatformConfig<Platform extends SocialPlatforms> =
   SocialPlatformsSchema[Platform]["config"];
 
 export type ConfigOauthPlatformsProps = {
-  [Platform in Platforms]?: SocialPlatformConfig<Platform>;
+  [Platform in SocialPlatforms]?: SocialPlatformConfig<Platform>;
 };
-export type SocialPlatforms = Platforms;
