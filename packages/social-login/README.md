@@ -19,6 +19,12 @@ pnpm add @bisham/social-login
 yarn add @bisham/social-login
 ```
 
+## Live Example
+
+Try out the library in a live CodeSandbox environment:
+
+🔗 **[View Live Example](https://codesandbox.io/p/devbox/lr2wsf?migrateFrom=8vcqu)**
+
 ## Quick Start
 
 ### 1. Configure OAuth Platforms
