@@ -12,11 +12,11 @@ A lightweight, framework-agnostic TypeScript library for implementing OAuth soci
 ## Installation
 
 ```bash
-npm install @bisham/social-login
+npm install @bisham/oauth
 # or
-pnpm add @bisham/social-login
+pnpm add @bisham/oauth
 # or
-yarn add @bisham/social-login
+yarn add @bisham/oauth
 ```
 
 ## Quick Start
@@ -26,7 +26,7 @@ yarn add @bisham/social-login
 First, set up your OAuth platform configurations:
 
 ```typescript
-import { configOauthPlatforms } from "@bisham/social-login";
+import { configOauthPlatforms } from "@bisham/oauth";
 
 const { connectSocialPlatform } = configOauthPlatforms(
   {
@@ -75,7 +75,7 @@ For OAuth flows, you need to handle the redirect callback. Create a callback pag
 
 ```tsx
 // routes/verify-social-link.tsx
-import { oauthResponseSubscription } from "@bisham/social-login";
+import { oauthResponseSubscription } from "@bisham/oauth";
 import { useEffect } from "react";
 
 export default function VerifySocialLink() {
@@ -279,8 +279,8 @@ Here's a complete example showing how to implement authentication in your applic
 ```tsx
 // auth.tsx
 import { useState } from "react";
-import { configOauthPlatforms, isOauthError } from "@bisham/social-login";
-import type { SocialPlatforms } from "@bisham/social-login";
+import { configOauthPlatforms, isOauthError } from "@bisham/oauth";
+import type { SocialPlatforms } from "@bisham/oauth";
 
 const { connectSocialPlatform } = configOauthPlatforms(
   {
@@ -386,7 +386,7 @@ export function AuthPage() {
 The library provides type-safe error handling through the `isOauthError` utility function:
 
 ```typescript
-import { isOauthError } from "@bisham/social-login";
+import { isOauthError } from "@bisham/oauth";
 
 try {
   const response = await connectSocialPlatform("github");
@@ -471,7 +471,7 @@ Handles OAuth redirect callback. Call this function in your redirect/callback pa
 **Usage:**
 
 ```typescript
-import { oauthResponseSubscription } from "@bisham/social-login";
+import { oauthResponseSubscription } from "@bisham/oauth";
 
 // Call in your callback page component
 oauthResponseSubscription();
@@ -524,7 +524,7 @@ import type {
   SocialSuccessResponse,
   SocialErrorResponse,
   SocialPlatformConfig,
-} from "@bisham/social-login";
+} from "@bisham/oauth";
 
 // Platform-specific types
 type GitHubResponse = SocialSuccessResponse<"github">;
