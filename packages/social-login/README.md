@@ -43,16 +43,17 @@ const { connectSocialPlatform } = configOauthPlatforms(
     },
     discord: {
       clientId: "your-discord-client-id",
-      redirectURI: "http://localhost:3000/auth/callback",
       state: "random-state-string",
       scopes: ["identify", "email"],
     },
   },
   {
-    defaultRedirectURI: "http://localhost:3000/auth/callback", // Used when platform doesn't specify redirectURI
+    defaultRedirectURI: "http://localhost:3000/auth/callback", // Used when platform doesn't specify redirectURI. e.g., here discord does not have redirectUrl setup so it uses defaultRedirectURI.
   }
 );
 ```
+
+> **💡 TypeScript IntelliSense Tip:** For better TypeScript IntelliSense and autocomplete, define your configuration inline (as shown above). This allows TypeScript to properly infer the types and provide platform-specific autocomplete suggestions for each platform's configuration options.
 
 ### 2. Connect to a Social Platform
 
@@ -68,9 +69,9 @@ try {
 
 ### 3. Handle Redirect Callback (URL-based flows)
 
-For URL-based OAuth flows, you need to handle the redirect callback. Create a callback page that calls `oauthResponseSubscription()`:
+For OAuth flows, you need to handle the redirect callback. Create a callback page that calls `oauthResponseSubscription()`:
 
-**Example with TanStack Start:**
+**Example:**
 
 ```tsx
 // routes/verify-social-link.tsx
@@ -86,37 +87,25 @@ export default function VerifySocialLink() {
 }
 ```
 
-**Example with Next.js:**
+## How It Works
 
-```tsx
-// pages/auth/callback.tsx
-import { oauthResponseSubscription } from "@bisham/social-login";
-import { useEffect } from "react";
+### URL-Based Flows (Most Platforms)
 
-export default function AuthCallback() {
-  useEffect(() => {
-    oauthResponseSubscription();
-  }, []);
+1. User clicks "Sign in with [Platform]"
+2. `connectSocialPlatform()` opens a popup window with the OAuth authorization URL
+3. User authorizes the application
+4. Platform redirects to your `redirectURI` with authorization code/error
+5. `oauthResponseSubscription()` captures the response and stores it in a cookie
+6. Popup closes and the promise resolves/rejects with the response
+7. Your application handles the response (exchange code for token, etc.)
 
-  return <div>Processing authentication...</div>;
-}
-```
+### SDK-Based Flows (Apple, Google)
 
-**Example with React Router:**
-
-```tsx
-// routes/AuthCallback.tsx
-import { oauthResponseSubscription } from "@bisham/social-login";
-import { useEffect } from "react";
-
-export function AuthCallback() {
-  useEffect(() => {
-    oauthResponseSubscription();
-  }, []);
-
-  return <div>Completing authentication...</div>;
-}
-```
+1. User clicks "Sign in with [Platform]"
+2. `connectSocialPlatform()` loads the platform SDK (if not already loaded)
+3. SDK handles the authentication flow
+4. Promise resolves/rejects with the SDK response
+5. Your application handles the response
 
 ## Configuration
 
@@ -144,6 +133,8 @@ const { connectSocialPlatform } = configOauthPlatforms(
 ### Platform-Specific Configuration
 
 Each platform has its own configuration requirements. Here are examples for common platforms:
+
+> **💡 Type Tip:** You can infer the exact configuration type for any platform using `SocialPlatformConfig<"platformName">`. For example, `SocialPlatformConfig<"github">` will give you the exact type for GitHub's configuration, providing full IntelliSense support.
 
 #### GitHub
 
@@ -522,26 +513,6 @@ Type guard to check if an error is a platform-specific OAuth error.
   scopeJoiner?: string;        // Character to join scopes (default: " ")
 }
 ```
-
-## How It Works
-
-### URL-Based Flows (Most Platforms)
-
-1. User clicks "Sign in with [Platform]"
-2. `connectSocialPlatform()` opens a popup window with the OAuth authorization URL
-3. User authorizes the application
-4. Platform redirects to your `redirectURI` with authorization code/error
-5. `oauthResponseSubscription()` captures the response and stores it in a cookie
-6. Popup closes and the promise resolves/rejects with the response
-7. Your application handles the response (exchange code for token, etc.)
-
-### SDK-Based Flows (Apple, Google)
-
-1. User clicks "Sign in with [Platform]"
-2. `connectSocialPlatform()` loads the platform SDK (if not already loaded)
-3. SDK handles the authentication flow
-4. Promise resolves/rejects with the SDK response
-5. Your application handles the response
 
 ## TypeScript Support
 
