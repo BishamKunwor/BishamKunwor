@@ -16,7 +16,13 @@ export default defineConfig([
   },
   {
     input: "src/index.ts",
-    output: [{ file: "dist/index.d.ts", format: "esm" }],
+    output: [
+      {
+        file: "dist/index.d.ts",
+        format: "esm",
+        banner: '/// <reference types="apple-signin-api" />\n/// <reference types="google.accounts" />',
+      },
+    ],
     plugins: [
       dts({
         respectExternal: true,
