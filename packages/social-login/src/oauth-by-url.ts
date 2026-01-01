@@ -15,14 +15,14 @@ export function oauthByUrl<TConfig extends Required<ConfigOauthPlatformsProps>>(
   platform: SocialPlatforms,
   config: TConfig,
   globalConfig?: {
-    redirectURI?: string;
+    defaultRedirectURI?: string;
   }
 ) {
   const defaultPlatformConfig = socialMediaConfig[platform as SocialPlatforms];
 
   const socialPlatformConfig = {
     state: Math.random().toString(36).substring(2, 15),
-    redirectURI: globalConfig?.redirectURI || window.location.origin,
+    redirectURI: globalConfig?.defaultRedirectURI || window.location.origin,
     ...defaultPlatformConfig,
     ...config[platform],
   } as GenerateOauthUrlProps;

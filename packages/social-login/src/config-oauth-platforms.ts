@@ -9,7 +9,7 @@ import type {
 export function configOauthPlatforms<TConfig extends ConfigOauthPlatformsProps>(
   config: TConfig,
   globalConfig?: {
-    redirectURI?: string;
+    defaultRedirectURI?: string;
   }
 ) {
   function connectSocialPlatform<SelectedPlatform extends keyof TConfig>(

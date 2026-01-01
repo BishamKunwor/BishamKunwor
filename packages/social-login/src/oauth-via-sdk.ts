@@ -12,7 +12,7 @@ export function oauthBySdk<TConfig extends Required<ConfigOauthPlatformsProps>>(
   platform: SocialPlatforms,
   config: TConfig,
   globalConfig?: {
-    redirectURI?: string;
+    defaultRedirectURI?: string;
   }
 ) {
   if (platform === "apple") {
@@ -23,7 +23,7 @@ export function oauthBySdk<TConfig extends Required<ConfigOauthPlatformsProps>>(
         platformConfig.scope ??
         socialMediaConfig.apple?.scopes?.join(" ") ??
         "",
-      redirectURI: platformConfig?.redirectURI || globalConfig?.redirectURI,
+      redirectURI: platformConfig?.redirectURI || globalConfig?.defaultRedirectURI,
       state: platformConfig?.state ?? generateState(),
       usePopup: platformConfig.usePopup ?? true,
     });
@@ -50,7 +50,7 @@ export function oauthBySdk<TConfig extends Required<ConfigOauthPlatformsProps>>(
         platformConfig.scope ??
         socialMediaConfig.google?.scopes?.join(" ") ??
         "",
-      redirect_uri: platformConfig?.redirect_uri ?? globalConfig?.redirectURI,
+      redirect_uri: platformConfig?.redirect_uri ?? globalConfig?.defaultRedirectURI,
       state: platformConfig?.state ?? generateState(),
     });
   }
