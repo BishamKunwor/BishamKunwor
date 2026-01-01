@@ -1,6 +1,7 @@
 import type { GenerateOauthUrlProps } from "./types";
 import { generateCodeChallenge } from "./utils";
 
+// Thanks better-auth for url generation logic for oauth2
 export function generateOauthUrl(props: GenerateOauthUrlProps) {
   const {
     authorizationEndpoint,

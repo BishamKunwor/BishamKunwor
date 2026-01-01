@@ -81,7 +81,6 @@ type SocialPlatformsSchema = {
     error: {
       error: string;
       error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
@@ -89,9 +88,9 @@ type SocialPlatformsSchema = {
       | "redirectURI"
       | "state"
       | "scopes"
-      | "responseType"
+      | "prompt"
       | "additionalParams",
-      "clientId"
+      "clientId" | "scopes"
     >;
   };
 
@@ -103,7 +102,6 @@ type SocialPlatformsSchema = {
     error: {
       error: string;
       error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
@@ -111,8 +109,7 @@ type SocialPlatformsSchema = {
       | "redirectURI"
       | "state"
       | "scopes"
-      | "responseType"
-      | "scopeJoiner"
+      | "prompt"
       | "additionalParams",
       "clientId"
     >;
@@ -126,16 +123,10 @@ type SocialPlatformsSchema = {
     error: {
       error: string;
       error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "additionalParams",
+      "clientId" | "redirectURI" | "state" | "scopes" | "additionalParams",
       "clientId"
     >;
   };
@@ -152,12 +143,7 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "additionalParams",
+      "clientId" | "redirectURI" | "state" | "scopes" | "additionalParams",
       "clientId"
     >;
   };
@@ -169,8 +155,6 @@ type SocialPlatformsSchema = {
     };
     error: {
       error: string;
-      error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
@@ -178,7 +162,7 @@ type SocialPlatformsSchema = {
       | "redirectURI"
       | "state"
       | "scopes"
-      | "responseType"
+      | "codeVerifier"
       | "additionalParams",
       "clientId"
     >;
@@ -196,7 +180,13 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      "clientId" | "redirectURI" | "state" | "scopes" | "additionalParams",
+      | "clientId"
+      | "redirectURI"
+      | "state"
+      | "scopes"
+      | "codeVerifier"
+      | "prompt"
+      | "additionalParams",
       "clientId"
     >;
   };
@@ -209,7 +199,6 @@ type SocialPlatformsSchema = {
     error: {
       error: string;
       error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
@@ -217,7 +206,7 @@ type SocialPlatformsSchema = {
       | "redirectURI"
       | "state"
       | "scopes"
-      | "responseType"
+      | "codeVerifier"
       | "additionalParams",
       "clientId"
     >;
@@ -235,12 +224,7 @@ type SocialPlatformsSchema = {
       state?: string;
     };
     config: WithRequiredOauthProps<
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "additionalParams",
+      "clientId" | "redirectURI" | "state" | "scopes" | "additionalParams",
       "clientId"
     >;
   };
@@ -261,30 +245,30 @@ type SocialPlatformsSchema = {
     >;
   };
 
-  microsoft: {
-    success: {
-      code: string;
-      state?: string;
-      session_state?: string;
-    };
-    error: {
-      error: string;
-      error_description?: string;
-      error_uri?: string;
-      state?: string;
-      admin_consent_required?: string;
-    };
-    config: WithRequiredOauthProps<
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "prompt"
-      | "additionalParams",
-      "clientId"
-    >;
-  };
+  // microsoft: {
+  //   success: {
+  //     code: string;
+  //     state?: string;
+  //     session_state?: string;
+  //   };
+  //   error: {
+  //     error: string;
+  //     error_description?: string;
+  //     error_uri?: string;
+  //     state?: string;
+  //     admin_consent_required?: string;
+  //   };
+  //   config: WithRequiredOauthProps<
+  //     | "clientId"
+  //     | "redirectURI"
+  //     | "state"
+  //     | "scopes"
+  //     | "responseType"
+  //     | "prompt"
+  //     | "additionalParams",
+  //     "clientId"
+  //   >;
+  // };
 
   notion: {
     success: {
@@ -293,62 +277,10 @@ type SocialPlatformsSchema = {
     };
     error: {
       error: string;
-      error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "additionalParams",
-      "clientId"
-    >;
-  };
-
-  paypal: {
-    success: {
-      code: string;
-      state?: string;
-    };
-    error: {
-      error: string;
-      error_description?: string;
-      error_uri?: string;
-      state?: string;
-    };
-    config: WithRequiredOauthProps<
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "additionalParams",
-      "clientId"
-    >;
-  };
-
-  reddit: {
-    success: {
-      code: string;
-      state?: string;
-    };
-    error: {
-      error: string;
-      error_description?: string;
-      error_uri?: string;
-      state?: string;
-    };
-    config: WithRequiredOauthProps<
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "duration"
-      | "additionalParams",
+      "clientId" | "redirectURI" | "state" | "scopes" | "additionalParams",
       "clientId"
     >;
   };
@@ -361,7 +293,6 @@ type SocialPlatformsSchema = {
     error: {
       error: string;
       error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
@@ -370,27 +301,25 @@ type SocialPlatformsSchema = {
     >;
   };
 
-  spotify: {
-    success: {
-      code: string;
-      state?: string;
-    };
-    error: {
-      error: string;
-      error_description?: string;
-      error_uri?: string;
-      state?: string;
-    };
-    config: WithRequiredOauthProps<
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "additionalParams",
-      "clientId"
-    >;
-  };
+  // spotify: {
+  //   success: {
+  //     code: string;
+  //     state?: string;
+  //   };
+  //   error: {
+  //     error: string;
+  //     state?: string;
+  //   };
+  //   config: WithRequiredOauthProps<
+  //     | "clientId"
+  //     | "redirectURI"
+  //     | "state"
+  //     | "scopes"
+  //     | "additionalParams"
+  //     | "codeVerifier",
+  //     "clientId" | "codeVerifier"
+  //   >;
+  // };
 
   tiktok: {
     success: {
@@ -420,7 +349,6 @@ type SocialPlatformsSchema = {
     error: {
       error: string;
       error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
@@ -428,7 +356,6 @@ type SocialPlatformsSchema = {
       | "redirectURI"
       | "state"
       | "scopes"
-      | "responseType"
       | "claims"
       | "additionalParams",
       "clientId"
@@ -442,8 +369,6 @@ type SocialPlatformsSchema = {
     };
     error: {
       error: string;
-      error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
@@ -451,10 +376,9 @@ type SocialPlatformsSchema = {
       | "redirectURI"
       | "state"
       | "scopes"
-      | "responseType"
       | "codeVerifier"
       | "additionalParams",
-      "clientId"
+      "clientId" | "codeVerifier"
     >;
   };
 
@@ -465,17 +389,10 @@ type SocialPlatformsSchema = {
     };
     error: {
       error: string;
-      error_description?: string;
-      error_uri?: string;
       state?: string;
     };
     config: WithRequiredOauthProps<
-      | "clientId"
-      | "redirectURI"
-      | "state"
-      | "scopes"
-      | "responseType"
-      | "additionalParams",
+      "clientId" | "redirectURI" | "state" | "scopes" | "additionalParams",
       "clientId"
     >;
   };
