@@ -17,6 +17,7 @@ export async function googleAuthTokenOauth(
     (resolve, reject) => {
       initTokenClient({
         ...config,
+        scope: config.scope ?? "",
         callback: (res) => {
           if (res.error) {
             reject(

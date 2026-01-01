@@ -17,6 +17,7 @@ export async function googleAuthCodeOauth(
     (resolve, reject) => {
       initCodeClient({
         ...config,
+        scope: config.scope ?? "",
         callback: (res) => {
           if (res.error) {
             reject(
