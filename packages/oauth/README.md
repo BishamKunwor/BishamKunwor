@@ -1,4 +1,4 @@
-A lightweight, framework-agnostic TypeScript library for implementing OAuth social login with multiple platforms.
+A lightweight, framework-agnostic TypeScript library for implementing OAuth with multiple platforms.
 
 ## Features
 
@@ -8,6 +8,26 @@ A lightweight, framework-agnostic TypeScript library for implementing OAuth soci
 - 🔄 **Flexible Configuration** - Global and platform-specific settings
 - 🛡️ **Error Handling** - Type-safe error handling with platform-specific error types
 - 🪟 **Popup Support** - Automatic popup window management for URL-based flows
+
+## Supported Platforms
+
+- **Apple**
+- **Atlassian**
+- **Discord**
+- **Dropbox**
+- **Facebook**
+- **Figma**
+- **GitHub**
+- **GitLab**
+- **Google (Auth Code, Token, One Tap)**
+- **Instagram**
+- **LinkedIn**
+- **Notion**
+- **Slack**
+- **TikTok**
+- **Twitch**
+- **Twitter**
+- **Zoom**
 
 ## Installation
 
@@ -411,26 +431,6 @@ Each platform has its own error response type. For example:
 - **Discord**: `{ error: string; error_description?: string; state?: string; }`
 - **Google**: `google.accounts.oauth2.ClientConfigError | google.accounts.oauth2.CodeResponse`
 - **Apple**: `AppleSignInAPI.SignInErrorI`
-
-## Supported Platforms
-
-- **Apple**
-- **Atlassian**
-- **Discord**
-- **Dropbox**
-- **Facebook**
-- **Figma**
-- **GitHub**
-- **GitLab**
-- **Google (Auth Code, Token, One Tap)**
-- **Instagram**
-- **LinkedIn**
-- **Notion**
-- **Slack**
-- **TikTok**
-- **Twitch**
-- **Twitter**
-- **Zoom**
 
 ## API Reference
 
